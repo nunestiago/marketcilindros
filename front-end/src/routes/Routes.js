@@ -1,8 +1,14 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
 
 import { SideBar } from '../components';
-import { Home, Login, Register, StoreProducts } from '../pages';
+import { UseAuth } from '../context/AuthContext';
+import { AddProduct, Home, Login, Register, StoreProducts } from '../pages';
+
+function ProtectedRoutes({ children }) {
+  const { token } = UseAuth();
+  return <Route render={() => (token ? children : <Redirect to='/' />)} />;
+}
 
 function Routes() {
   return (
@@ -11,9 +17,12 @@ function Routes() {
         <Route path='/' exact component={Home} />
         <Route path='/login' component={Login} />
         <Route path='/register' component={Register} />
-        <SideBar>
-          <Route path='/store' component={StoreProducts} />
-        </SideBar>
+        <ProtectedRoutes>
+          <SideBar>
+            <Route path='/store' component={StoreProducts} />
+            <Route path='/addproduct' component={AddProduct} />
+          </SideBar>
+        </ProtectedRoutes>
       </Switch>
     </Router>
   );
