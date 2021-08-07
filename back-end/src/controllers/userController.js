@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken';
 
 import connect from '../database/connect';
 
+/* eslint-disable camelcase */
 export const register = async (req, res) => {
   const { username, storename, email, password } = req.body;
 
@@ -84,4 +85,66 @@ export const login = async (req, res) => {
 
 export const userProfile = async (req, res) => {
   res.json(req.user);
+};
+
+export const userEdit = async (req, res) => {
+  const {
+    nome: newNome,
+    nome_loja: newLoja,
+    email: newEmail,
+    senha: newPassword,
+  } = req.body;
+
+  const { id, nome, nome_loja, email } = req.user;
+
+  if (newEmail !== email) {
+    try {
+      const queryEmail = 'select * from usuarios where email = $1';
+      const isEmail = await connect.query(queryEmail, [newEmail]);
+
+      if (isEmail.rowCount !== 0) {
+        return res.status(400).json('E-mail já existe');
+      }
+    } catch (error) {
+      return res.status(400).json(error.message);
+    }
+  }
+  const { rows: oldHash } = await connect.query(
+    'select senha from usuarios where id = $1',
+    [id],
+  );
+
+  let newHash;
+  if (newPassword) {
+    newHash = await bcrypt.hash(newPassword, 8);
+  }
+
+  const updatedName = newNome ?? nome;
+  const updatedStore = newLoja ?? nome_loja;
+  const updatedEmail = newEmail ?? email;
+  const updatedPassword = newHash ?? oldHash;
+
+  try {
+    const query =
+      'update public.usuarios set nome = $1,nome_loja = $2,email = $3, senha=$4 where id = $5';
+    const updatedUser = await connect.query(query, [
+      updatedName,
+      updatedStore,
+      updatedEmail,
+      updatedPassword,
+      id,
+    ]);
+
+    if (!updatedUser.rowCount) {
+      return res.status(400).json({ error: ['Liga pro gerente!'] });
+    }
+
+    return res
+      .status(200)
+      .json(
+        `Usuário ${updatedName}, loja ${updatedStore}, e-mail ${updatedEmail} e senha ******* atualizados`,
+      );
+  } catch (error) {
+    return res.status(400).json(error.message);
+  }
 };
