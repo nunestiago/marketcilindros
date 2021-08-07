@@ -1,7 +1,7 @@
 import { Button, Grid, Paper, TextField, Typography } from '@material-ui/core';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 import { CustomAlert, PasswordInput } from '../../components';
 import Loading from '../../components/Loading/Loading';
@@ -10,6 +10,8 @@ import useStyles from './styles';
 function Register() {
   const classes = useStyles();
   const [loading, setLoading] = useState(false);
+  const history = useHistory();
+  
   const {
     register,
     handleSubmit,
@@ -17,7 +19,32 @@ function Register() {
     formState: { errors },
   } = useForm();
 
-  async function handleRegistration(data) {}
+  async function handleRegistration(data) {
+    setLoading(true);
+
+    try {
+      const response = await fetch('http://localhost:3001/register', {
+        method: 'POST',
+        body: JSON.stringify({
+          username: data.username,
+          storename: data.storename,
+          email: data.email,
+          password: data.password,
+        }),
+        headers: { 'Content-Type': 'application/json' },
+      });
+      const dataAPI = await response.json();
+      if (!response.ok) {
+        let err = new Error(dataAPI);
+        err.Status = 400;
+        throw err;
+      }
+      setLoading(false);
+      history.push('/login');
+    } catch (error) {
+      setLoading(false);
+    }
+  }
 
   return (
     <div className={classes.root}>
