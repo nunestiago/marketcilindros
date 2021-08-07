@@ -1,7 +1,7 @@
 import { Button, Grid, Paper, TextField, Typography } from '@material-ui/core';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 import { CustomAlert, Loading } from '../../components';
 import PasswordInput from '../../components/PasswordInput/PasswordInput';
@@ -11,6 +11,7 @@ import useStyles from './styles';
 function Login() {
   const classes = useStyles();
   const [loading, setLoading] = useState(false);
+  const history = useHistory();
   const {
     register,
     handleSubmit,
@@ -19,6 +20,28 @@ function Login() {
 
   async function handleLogin(data) {
     setLoading(true);
+
+    try {
+      const response = await fetch('http://localhost:3001/login', {
+        method: 'POST',
+        body: JSON.stringify({
+          email: data.email,
+          password: data.senha,
+        }),
+        headers: { 'Content-Type': 'application/json' },
+      });
+      const dataApi = await response.json();
+
+      if (response.ok) {
+        history.push('/store');
+        setLoading(false);
+      }
+      let err = new Error(dataApi);
+      err.Status = 400;
+      throw err;
+    } catch (error) {
+      setLoading(false);
+    }
   }
 
   return (
