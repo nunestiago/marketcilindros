@@ -1,4 +1,5 @@
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 
 import connect from '../database/connect';
 
@@ -39,5 +40,39 @@ export const register = async (req, res) => {
 };
 
 export const login = async (req, res) => {
-  res.json('Hello world again!');
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    return res.status(400).json('E-mail e senha obrigatórios');
+  }
+
+  try {
+    const query = 'select * from usuarios where email = $1';
+    const isUser = await connect.query(query, [email]);
+
+    if (isUser.rowCount === 0) {
+      return res.status(400).json('E-mail ou senha inválidos');
+    }
+
+    const user = isUser.rows[0];
+    const hash = user.senha;
+    const isPassword = await bcrypt.compare(password, hash);
+
+    if (!isPassword) {
+      return res.status(400).json('E-mail ou senha inválidos');
+    }
+
+    const jwtSecret = process.env.TOKEN_SECRET;
+    const token = jwt.sign(
+      { id: user.id, email, storename: user.storename },
+      jwtSecret,
+      { expiresIn: process.env.TOKEN_EXPIRATION },
+    );
+
+    const { senha, ...rest } = user;
+
+    return res.status(200).json({ user: rest, token });
+  } catch (error) {
+    return res.status(400).json(error.message);
+  }
 };
