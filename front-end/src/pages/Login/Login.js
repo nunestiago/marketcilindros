@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 
-import { Loading } from '../../components';
+import { CustomAlert, Loading } from '../../components';
 import PasswordInput from '../../components/PasswordInput/PasswordInput';
 import { emailRegex } from '../../utils/emailRegex';
 import useStyles from './styles';
@@ -55,6 +55,7 @@ function Login() {
             <Button type='submit' color='primary' variant='contained'>
               Entrar
             </Button>
+            <CustomAlert errors={errors} />
             <Typography
               variant='caption'
               display='block'
