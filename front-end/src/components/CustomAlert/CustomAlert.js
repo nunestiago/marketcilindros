@@ -35,7 +35,12 @@ function CustomAlert({ errors }) {
   return (
     <>
       {Object.keys(errors).map((item) => (
-        <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <Snackbar
+          open={open}
+          autoHideDuration={6000}
+          onClose={handleClose}
+          key={errors[item]}
+        >
           <Alert severity='error' className={classes.alert}>
             {errors[item].message}
           </Alert>
