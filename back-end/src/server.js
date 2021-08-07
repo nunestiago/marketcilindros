@@ -1,13 +1,13 @@
 import express from 'express';
 
+import router from './routes/router';
+
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.get('/', (req, res) => res.json('Hello world'));
+app.use(router);
 
 const port = process.env.PORT || 3001;
-app.listen(port, () => {
-  console.log(`Escutando na ${port}`);
-  console.log(`http://localhost:${port}`);
-});
+
+app.listen(port);
