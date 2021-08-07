@@ -5,6 +5,7 @@ import { Link, useHistory } from 'react-router-dom';
 
 import { CustomAlert, Loading } from '../../components';
 import PasswordInput from '../../components/PasswordInput/PasswordInput';
+import { UseAuth } from '../../context/AuthContext';
 import { emailRegex } from '../../utils/emailRegex';
 import useStyles from './styles';
 
@@ -12,6 +13,7 @@ function Login() {
   const classes = useStyles();
   const [loading, setLoading] = useState(false);
   const history = useHistory();
+  const { setUser } = UseAuth();
   const {
     register,
     handleSubmit,
@@ -33,6 +35,7 @@ function Login() {
       const dataApi = await response.json();
 
       if (response.ok) {
+        setUser(dataApi);
         history.push('/store');
         setLoading(false);
       }
