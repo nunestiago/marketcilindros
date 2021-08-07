@@ -2,67 +2,104 @@ import { Button, Divider, InputAdornment, TextField, Typography } from '@materia
 import clsx from 'clsx';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { Link, useHistory } from 'react-router-dom';
 
 import { CustomAlert, Loading } from '../../components';
+import { UseAuth } from '../../context/AuthContext';
 import useStyles from './styles';
 
 function AddProducts() {
   const classes = useStyles();
+  const history = useHistory();
   const [loading, setLoading] = useState(false);
+  const { user, token } = UseAuth();
 
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm();
 
-  function onSubmit(data) {
+  async function handleNewItem(data) {
     setLoading(true);
 
+    const formatedPrice = (data.price * 100).toFixed(0);
+
     try {
-    } catch (error) {}
+      const response = await fetch('http://localhost:3001/addproduct', {
+        method: 'POST',
+        body: JSON.stringify({
+          userId: user.id,
+          name: data.productName,
+          price: formatedPrice,
+          stock: data.stock,
+          description: data.description,
+          image: 'http://loremflickr.com/240/230',
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+          authorization: 'Bearer ' + token,
+        },
+      });
+      const dataAPI = await response.json();
+      if (!response.ok) {
+        let err = new Error(dataAPI);
+        err.Status = 400;
+        throw err;
+      }
+      history.push('/store');
+      reset();
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+    }
   }
 
   return (
     <div className={classes.root}>
       <Loading loading={loading} />
       <Typography variant='h3' className={classes.title}>
-        Nome da loja
+        {user.nome_loja}
       </Typography>
       <Typography variant='h4' className={classes.subtitle}>
         Adicionar produto
       </Typography>
-      <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(handleNewItem)} className={classes.forms}>
         <TextField
           id='storename'
-          label='Nome da loja'
+          label='Nome do produto'
           type='text'
           className={classes.margin}
-          {...register('storeName', {
-            required: "'Nome da Loja' obrigatório ",
+          {...register('productName', {
+            required: "'Nome do produto' obrigatório ",
           })}
         />
         <div>
           <TextField
+            {...register('price', {
+              required: "'Preço' obrigatório ",
+              valueAsNumber: 'Preço em números',
+            })}
             label='Preço'
-            id='standard-start-adornment'
+            id='price'
             type='number'
-            className={clsx(classes.margin, classes.textField)}
+            className={clsx(classes.margin)}
             InputProps={{
-              inputProps: { min: '0.00', step: '0.01' },
+              inputProps: { min: 0, step: 0.1 },
               startAdornment: (
                 <InputAdornment position='start'>R$</InputAdornment>
               ),
             }}
-            {...register('price', {
-              required: "'Preço' obrigatório ",
-              valueAsNumber: 'Preço com números',
-            })}
           />
           <TextField
+            {...register('stock', {
+              required: "'Estoque' obrigatório ",
+              valueAsNumber: 'Estoque em números',
+            })}
             label='Estoque'
-            id='standard-start-adornment'
-            className={clsx(classes.margin, classes.textField)}
+            id='stock'
+            className={clsx(classes.margin)}
             type='number'
             InputProps={{
               inputProps: { min: 0 },
@@ -70,10 +107,6 @@ function AddProducts() {
                 <InputAdornment position='start'>Un</InputAdornment>
               ),
             }}
-            {...register('storeName', {
-              required: "'Estoque' obrigatório ",
-              valueAsNumber: 'Estoque em números',
-            })}
           />
         </div>
         <TextField
@@ -93,7 +126,9 @@ function AddProducts() {
         <div className={classes.footer}>
           <Divider className={classes.divider} />
           <CustomAlert errors={errors} />
-          <Button color='primary'>CANCELAR</Button>
+          <Button color='primary' component={Link} to={'/store'}>
+            CANCELAR
+          </Button>
           <Button variant='contained' color='primary' type='submit'>
             Adicionar produto
           </Button>
