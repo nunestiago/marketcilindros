@@ -4,18 +4,18 @@ export const AuthContext = createContext();
 
 function AuthProvider({ children }) {
   const [user, setUser] = useState({});
-  // TODO deslogar
+  const [token, setToken] = useState('');
 
   return (
-    <AuthContext.Provider value={{ user, setUser }}>
+    <AuthContext.Provider value={{ user, setUser, token, setToken }}>
       {children}
     </AuthContext.Provider>
   );
 }
 
 function UseAuth() {
-  const { user, setUser } = useContext(AuthContext);
-  return { user, setUser };
+  const { user, setUser, token, setToken } = useContext(AuthContext);
+  return { user, setUser, token, setToken };
 }
 
 export { AuthProvider, UseAuth };
