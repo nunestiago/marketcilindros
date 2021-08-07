@@ -1,10 +1,16 @@
 import './App.css';
 
+import { CssBaseline, ThemeProvider } from '@material-ui/core';
+
+import theme from './config/theme';
+import { Login } from './pages';
+
 function App() {
   return (
-    <div>
-      Olá, mundo!
-    </div>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <Login />
+    </ThemeProvider>
   );
 }
 
