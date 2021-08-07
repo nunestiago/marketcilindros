@@ -1,4 +1,5 @@
 import { Button, Grid, Paper, TextField, Typography } from '@material-ui/core';
+import { Alert } from '@material-ui/lab';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useHistory } from 'react-router-dom';
@@ -13,6 +14,7 @@ function Login() {
   const classes = useStyles();
   const [loading, setLoading] = useState(false);
   const history = useHistory();
+  const [apiError, setApiError] = useState('');
   const { setUser } = UseAuth();
   const {
     register,
@@ -28,7 +30,7 @@ function Login() {
         method: 'POST',
         body: JSON.stringify({
           email: data.email,
-          password: data.senha,
+          password: data.password,
         }),
         headers: { 'Content-Type': 'application/json' },
       });
@@ -44,6 +46,7 @@ function Login() {
       throw err;
     } catch (error) {
       setLoading(false);
+      setApiError(error.message);
     }
   }
 
@@ -83,6 +86,11 @@ function Login() {
               />
 
               <CustomAlert errors={errors} />
+              {apiError && (
+                <Alert severity='error' className={classes.alert}>
+                  {apiError}
+                </Alert>
+              )}
 
               <Button type='submit' color='primary' variant='contained'>
                 Entrar
