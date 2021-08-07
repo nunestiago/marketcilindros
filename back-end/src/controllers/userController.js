@@ -64,7 +64,12 @@ export const login = async (req, res) => {
 
     const jwtSecret = process.env.TOKEN_SECRET;
     const token = jwt.sign(
-      { id: user.id, email, storename: user.storename },
+      {
+        id: user.id,
+        name: user.nome,
+        storename: user.nome_loja,
+        email,
+      },
       jwtSecret,
       { expiresIn: process.env.TOKEN_EXPIRATION },
     );
@@ -75,4 +80,8 @@ export const login = async (req, res) => {
   } catch (error) {
     return res.status(400).json(error.message);
   }
+};
+
+export const userProfile = async (req, res) => {
+  res.json(req.user);
 };
