@@ -12,10 +12,10 @@ import useStyles from './styles';
 
 function Login() {
   const classes = useStyles();
-  const [loading, setLoading] = useState(false);
   const history = useHistory();
+  const [loading, setLoading] = useState(false);
   const [apiError, setApiError] = useState('');
-  const { setUser } = UseAuth();
+  const { setUser, setToken, setCachedUser } = UseAuth();
   const {
     register,
     handleSubmit,
@@ -37,7 +37,8 @@ function Login() {
       const dataApi = await response.json();
 
       if (response.ok) {
-        setUser(dataApi);
+        setUser(dataApi.user);
+        setToken(dataApi.token);
         history.push('/store');
         setLoading(false);
       }

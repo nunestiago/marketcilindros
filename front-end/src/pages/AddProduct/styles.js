@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
   subtitle: {
     marginBottom: 57,
   },
-  form: {
+  forms: {
     display: 'flex',
     flexDirection: 'column',
   },
