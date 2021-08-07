@@ -4,6 +4,7 @@ import CancelIcon from '@material-ui/icons/Cancel';
 import PersonIcon from '@material-ui/icons/Person';
 import StorefrontIcon from '@material-ui/icons/Storefront';
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import useStyles from './styles';
 
@@ -31,6 +32,8 @@ export default function IconTabs(props) {
             selected={true}
             icon={<StorefrontIcon className={classes.svgIcon} />}
             aria-label='loja'
+            component={Link}
+            to={'store'}
           />
           <Tab
             icon={<PersonIcon className={classes.svgIcon} />}
