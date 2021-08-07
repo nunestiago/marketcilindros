@@ -10,26 +10,24 @@ function StoreProducts() {
   const classes = useStyles();
   const [products, setProducts] = useState([]);
   const [isEmpty, setIsEmpty] = useState(false);
-  const { user } = UseAuth();
+  const { user, token } = UseAuth();
 
   useEffect(() => {
     async function getData() {
       try {
         const response = await fetch('http://localhost:3001/store', {
-          method: 'POST',
-          body: JSON.stringify({
-            id: 7,
-          }),
-          headers: { 'Content-Type': 'application/json' },
+          headers: {
+            Authorization: 'Bearer ' + token,
+          },
         });
-        const { rows } = await response.json();
-        console.log(rows);
-        if (rows.length === 0) {
+        const data = await response.json();
+        if (data.length === 0) {
           setIsEmpty(true);
         }
-        setProducts(rows);
+        setProducts(data);
+        console.log(data);
       } catch (error) {
-        console.log(error);
+        console.log(error.message);
       }
     }
     getData();
@@ -38,7 +36,7 @@ function StoreProducts() {
   return (
     <div className={classes.root}>
       <Typography variant='h3' className={classes.title}>
-        Nome da loja
+        {user.nome_loja}
       </Typography>
       <Typography variant='h4' className={classes.subtitle}>
         Seus produtos
@@ -47,7 +45,7 @@ function StoreProducts() {
       <div style={{ display: 'flex', marginRight: '10px' }}>
         <CustomCard />
         {products &&
-          products.map((item) => <CustomCard item={item} key={item.id} />)}
+          products.forEach((item) => <CustomCard item={item} key={item.id} />)}
       </div>
 
       <Divider className={classes.divider} />
