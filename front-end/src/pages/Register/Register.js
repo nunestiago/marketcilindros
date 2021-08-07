@@ -1,4 +1,5 @@
 import { Button, Grid, Paper, TextField, Typography } from '@material-ui/core';
+import { Alert } from '@material-ui/lab';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useHistory } from 'react-router-dom';
@@ -10,8 +11,9 @@ import useStyles from './styles';
 function Register() {
   const classes = useStyles();
   const [loading, setLoading] = useState(false);
+  const [apiError, setApiError] = useState('');
   const history = useHistory();
-  
+
   const {
     register,
     handleSubmit,
@@ -23,7 +25,7 @@ function Register() {
     setLoading(true);
 
     try {
-      const response = await fetch('http://localhost:3001/register', {
+      const response = await fetch('http://localhost:3001/cadastro', {
         method: 'POST',
         body: JSON.stringify({
           username: data.username,
@@ -42,6 +44,7 @@ function Register() {
       setLoading(false);
       history.push('/login');
     } catch (error) {
+      setApiError(error.message);
       setLoading(false);
     }
   }
@@ -113,7 +116,11 @@ function Register() {
                   })
                 }
               />
-
+              {apiError && (
+                <Alert severity='error' className={classes.alert}>
+                  {apiError}
+                </Alert>
+              )}
               <CustomAlert errors={errors} />
 
               <Button type='submit' color='primary' variant='contained'>
