@@ -1,9 +1,10 @@
+/* eslint-disable object-curly-newline */
+/* eslint-disable camelcase */
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
 import connect from '../database/connect';
 
-/* eslint-disable camelcase */
 export const register = async (req, res) => {
   const { username, storename, email, password } = req.body;
 
