@@ -32,7 +32,7 @@ function CustomCard({ item }) {
           >
             {item?.name ?? 'Registre algo'}
           </Typography>
-          <Typography variant='caption' color='#222222' component='p'>
+          <Typography variant='caption' color='textPrimary' component='p'>
             {item?.description ?? 'Cadastre primeiro produto'}
           </Typography>
           <div className={classes.cardBottom}>
@@ -43,7 +43,7 @@ function CustomCard({ item }) {
             >
               {item?.stock ?? 0} unidades
             </Typography>
-            <Typography variant='body2' color='#222222' component='p'>
+            <Typography variant='body2' color='textPrimary' component='p'>
               R$ {(item?.price / 100).toFixed(2) ?? 99.99}
             </Typography>
           </div>
