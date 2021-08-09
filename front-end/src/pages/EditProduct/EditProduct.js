@@ -1,23 +1,23 @@
 import { Button, Divider, InputAdornment, TextField, Typography } from '@material-ui/core';
 import clsx from 'clsx';
 import Image from 'material-ui-image';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
 
+import { Loading } from '../../components';
+import { UseAuth } from '../../context/AuthContext';
 import useStyles from './styles';
 
 function EditProduct(props) {
   const classes = useStyles();
   const history = useHistory();
-  console.log(props.match.params);
-  const {
-    register,
-    handleSubmit,
+  const [product, setProduct] = useState({});
+  const { user, token } = UseAuth();
+  const [loading, setLoading] = useState(false);
 
-    formState: { errors },
-  } = useForm();
-  console.log(product);
+  const { id } = props.match.params;
+  const { register, handleSubmit } = useForm();
 
   useEffect(() => {
     async function getData() {
@@ -41,100 +41,132 @@ function EditProduct(props) {
     getData();
   }, []);
 
-  async function onSubmit(data) {
+  async function handleEditProduct(data) {
+    setLoading(true);
+    const onlyUpdatedData = Object.fromEntries(
+      Object.entries(data).filter(([, value]) => value)
+    );
+    console.log(await data);
 
-  function onSubmit(data) {
-    console.log(data);
-    console.log(errors);
+    if (onlyUpdatedData.preco) {
+      onlyUpdatedData.preco *= 100;
+    }
+
+    try {
+      const response = await fetch(`http://localhost:3001/produto/${id}`, {
+        method: 'PUT',
+        body: JSON.stringify(onlyUpdatedData),
+        headers: {
+          'Content-type': 'application/json',
+          Authorization: 'Bearer ' + token,
+        },
+      });
+
+      const data = await response.json();
+
+      if (data.error) {
+        console.log(data.error);
+      }
+
+      setLoading(false);
+
+      return history.push('/produtos');
+    } catch (error) {
+      setLoading(false);
+      console.log(error.message);
+    }
   }
 
   return (
     <div className={classes.root}>
-      <Typography variant='h3' className={classes.title}>
-        Nome do produto
-      </Typography>
-      <Typography variant='h4' className={classes.subtitle}>
-        Editar produto
-      </Typography>
-      <div className={classes.toFlex}>
-        <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
-          <TextField
-            id='storename'
-            label='Nome da loja'
-            type='text'
-            className={classes.margin}
-            {...register('storeName', {
-              required: "'Nome da Loja' obrigatório ",
-            })}
-          />
-          <div>
+      <Loading loading={loading} />
+      <form onSubmit={handleSubmit(handleEditProduct)}>
+        <Typography variant='h3' className={classes.title}>
+          {user.nome_loja}
+        </Typography>
+        <Typography variant='h4' className={classes.subtitle}>
+          Editar produto
+        </Typography>
+        <div className={classes.toFlex}>
+          <div className={classes.form}>
             <TextField
-              label='Preço'
-              id='standard-start-adornment'
-              type='number'
-              className={clsx(classes.margin, classes.textField)}
-              InputProps={{
-                inputProps: { min: '0.00', step: '0.01' },
-                startAdornment: (
-                  <InputAdornment position='start'>R$</InputAdornment>
-                ),
-              }}
-              {...register('price', {
-                required: "'Preço' obrigatório ",
-              })}
+              id='storename'
+              label='Nome do produto'
+              helperText={product.nome}
+              type='text'
+              className={classes.margin}
+              {...register('nome')}
+            />
+            <div>
+              <TextField
+                label='Preço'
+                id='standard-start-adornment'
+                type='number'
+                helperText={product.preco}
+                className={clsx(classes.margin, classes.textField)}
+                InputProps={{
+                  inputProps: { min: '0.00', step: '0.01' },
+                  startAdornment: (
+                    <InputAdornment position='start'>R$</InputAdornment>
+                  ),
+                }}
+                {...register('preco')}
+              />
+              <TextField
+                label='Estoque'
+                id='standard-start-adornment'
+                helperText={product.estoque}
+                className={clsx(classes.margin, classes.textField)}
+                type='number'
+                InputProps={{
+                  inputProps: { min: 0 },
+                  startAdornment: (
+                    <InputAdornment position='start'>Un</InputAdornment>
+                  ),
+                }}
+                {...register('estoque')}
+              />
+            </div>
+            <TextField
+              id='productDescription'
+              label='Descrição do produto'
+              helperText={product.descricao}
+              type='text'
+              className={classes.margin}
+              {...register('descricao')}
             />
             <TextField
-              label='Estoque'
-              id='standard-start-adornment'
-              className={clsx(classes.margin, classes.textField)}
-              type='number'
-              InputProps={{
-                inputProps: { min: 0 },
-                startAdornment: (
-                  <InputAdornment position='start'>Un</InputAdornment>
-                ),
+              id='productImage'
+              label='Imagem'
+              helperText={product.imagem}
+              type='text'
+              className={classes.margin}
+              {...register('imagem')}
+            />{' '}
+          </div>
+
+          <div className={classes.image}>
+            <Image
+              src={product.imagem}
+              style={{
+                width: '300px',
+                height: '400px',
+                borderRadius: '16px',
+                overflow: 'hidden',
               }}
-              {...register('storeName', {
-                required: "'Estoque' obrigatório ",
-              })}
             />
           </div>
-          <TextField
-            id='productDescription'
-            label='Descrição do produto'
-            type='text'
-            className={classes.margin}
-            {...register('productDescription')}
-          />
-          <TextField
-            id='productImage'
-            label='Imagem'
-            type='text'
-            className={classes.margin}
-            {...register('productImage')}
-          />
-        </form>
-        <div className={classes.image}>
-          <Image
-            src='http://loremflickr.com/300/400'
-            style={{
-              width: '300px',
-              height: '400px',
-              borderRadius: '16px',
-              overflow: 'hidden',
-            }}
-          />
         </div>
-      </div>
-      <div className={classes.footer}>
-        <Divider className={classes.divider} />
-        <Button color='primary' onClick={() => history.push('/produtos')}>
-          CANCELAR
-        </Button>
-        <Button variant='contained' color='primary' type='submit'>
-          Adicionar produto
-        </Button>
-      </div>
+        <div className={classes.footer}>
+          <Divider className={classes.divider} />
+          <Button color='primary' onClick={() => history.push('/produtos')}>
+            CANCELAR
+          </Button>
+          <Button variant='contained' color='primary' type='submit'>
+            Editar produto
+          </Button>
+        </div>
+      </form>
     </div>
   );
 }
