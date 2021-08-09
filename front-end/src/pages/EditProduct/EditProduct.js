@@ -1,4 +1,10 @@
-import { Button, Divider, InputAdornment, TextField, Typography } from '@material-ui/core';
+import {
+  Button,
+  Divider,
+  InputAdornment,
+  TextField,
+  Typography,
+} from '@material-ui/core';
 import clsx from 'clsx';
 import Image from 'material-ui-image';
 import React, { useEffect, useState } from 'react';
@@ -25,11 +31,11 @@ function EditProduct(props) {
       try {
         const response = await fetch(`http://localhost:3001/produtos/${id}`, {
           method: 'GET',
-
           headers: {
             Authorization: 'Bearer ' + token,
           },
         });
+
         const data = await response.json();
         setLoading(false);
         return setProduct(data);
@@ -43,6 +49,7 @@ function EditProduct(props) {
 
   async function handleEditProduct(data) {
     setLoading(true);
+
     const onlyUpdatedData = Object.fromEntries(
       Object.entries(data).filter(([, value]) => value)
     );
@@ -79,13 +86,16 @@ function EditProduct(props) {
   return (
     <div className={classes.root}>
       <Loading loading={loading} />
+
       <form onSubmit={handleSubmit(handleEditProduct)}>
         <Typography variant='h3' className={classes.title}>
           {user.nome_loja}
         </Typography>
+
         <Typography variant='h4' className={classes.subtitle}>
           Editar produto
         </Typography>
+
         <div className={classes.toFlex}>
           <div className={classes.form}>
             <TextField
@@ -111,6 +121,7 @@ function EditProduct(props) {
                 }}
                 {...register('preco')}
               />
+
               <TextField
                 label='Estoque'
                 id='standard-start-adornment'
@@ -158,9 +169,11 @@ function EditProduct(props) {
         </div>
         <div className={classes.footer}>
           <Divider className={classes.divider} />
+
           <Button color='primary' onClick={() => history.push('/produtos')}>
             CANCELAR
           </Button>
+
           <Button variant='contained' color='primary' type='submit'>
             Editar produto
           </Button>

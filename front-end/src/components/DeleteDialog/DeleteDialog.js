@@ -22,16 +22,18 @@ function ResponsiveDialog({ id }) {
   const { token } = UseAuth();
   const history = useHistory();
 
-  const handleClickOpen = () => {
+  const handleClickOpen = (e) => {
+    e.stopPropagation();
+    e.cancelBubble = true;
     setOpen(true);
   };
 
   const handleClose = () => {
     setOpen(false);
+    history.push('/produtos');
   };
 
   const handleDelete = async (e) => {
-    e.preventDefault();
     try {
       const response = await fetch(`http://localhost:3001/produto/${id}`, {
         method: 'DELETE',

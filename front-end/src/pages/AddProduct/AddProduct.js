@@ -1,4 +1,10 @@
-import { Button, Divider, InputAdornment, TextField, Typography } from '@material-ui/core';
+import {
+  Button,
+  Divider,
+  InputAdornment,
+  TextField,
+  Typography,
+} from '@material-ui/core';
 import clsx from 'clsx';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -17,7 +23,6 @@ function AddProducts() {
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors },
   } = useForm();
 

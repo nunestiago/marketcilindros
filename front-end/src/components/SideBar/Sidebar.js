@@ -3,18 +3,27 @@ import Tabs from '@material-ui/core/Tabs';
 import CancelIcon from '@material-ui/icons/Cancel';
 import PersonIcon from '@material-ui/icons/Person';
 import StorefrontIcon from '@material-ui/icons/Storefront';
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, useHistory } from 'react-router-dom';
 
+import { UseAuth } from '../../context/AuthContext';
 import useStyles from './styles';
 
 export default function IconTabs(props) {
   const classes = useStyles();
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = useState(0);
+  const { setUser, setToken } = UseAuth();
+  const history = useHistory();
 
-  const handleChange = (event, newValue) => {
+  const handleChange = (newValue) => {
     setValue(newValue);
   };
+
+  function logout() {
+    setUser({});
+    setToken('');
+    history.push('/');
+  }
 
   return (
     <div style={{ display: 'flex' }}>
@@ -44,6 +53,7 @@ export default function IconTabs(props) {
           <Tab
             icon={<CancelIcon className={classes.svgIcon} />}
             aria-label='logout'
+            onClick={logout}
           />
         </Tabs>
       </div>

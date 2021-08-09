@@ -15,12 +15,13 @@ function CustomCard({ item }) {
 
   function handleItem(e) {
     e.stopPropagation();
+    e.cancelBubble = true;
     history.push(`/produtos/${item.id}/editar`);
   }
 
   return (
     <Card className={classes.root} id={item?.id ?? 1}>
-      <CardActionArea onClick={(e) => handleItem(e)}>
+      <CardActionArea onClick={handleItem}>
         <DeleteDialog id={item?.id} />
         <CardMedia
           component='img'
