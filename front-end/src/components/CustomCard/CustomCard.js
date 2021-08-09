@@ -4,16 +4,18 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 
 import { DeleteDialog } from '..';
 import useStyles from './styles';
 
 function CustomCard({ item }) {
   const classes = useStyles();
+  const history = useHistory();
 
   function handleItem(e) {
     e.stopPropagation();
-    console.log(item);
+    history.push(`/produtos/${item.id}/editar`);
   }
 
   return (
