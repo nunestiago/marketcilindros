@@ -1,3 +1,4 @@
+/* eslint-disable operator-linebreak */
 /* eslint-disable object-curly-newline */
 /* eslint-disable camelcase */
 import bcrypt from 'bcrypt';
@@ -14,8 +15,9 @@ export const register = async (req, res) => {
 
   try {
     const query = 'select * from usuarios where email = $1';
-    const user = await connect.query(query, [email]);
-    if (user.rowCount > 0) {
+    const { rowCount: isEmail } = await connect.query(query, [email]);
+
+    if (isEmail) {
       return res.status(400).json(`O email: ${email}, já está cadastrado`);
     }
   } catch (e) {
@@ -26,13 +28,21 @@ export const register = async (req, res) => {
 
   try {
     const hash = await bcrypt.hash(password, 8);
-    const registerStore = await connect.query(
-      'insert into usuarios (nome, nome_loja, email, senha) values ($1,$2,$3,$4) ',
-      [username, storename, email, hash],
-    );
-    if (registerStore.rowCount === 0) {
+
+    const registerQuery =
+      'insert into usuarios (nome, nome_loja, email, senha) values ($1,$2,$3,$4) ';
+
+    const { rowCount: isRegister } = await connect.query(registerQuery, [
+      username,
+      storename,
+      email,
+      hash,
+    ]);
+
+    if (!isRegister) {
       return res.status(400).json('Não foi possivel cadastrar usuário');
     }
+
     return res.status(200).json([
       {
         message: `Usuário ${username} registrado com a loja ${storename} e o e-mail ${email}`,
@@ -54,13 +64,14 @@ export const login = async (req, res) => {
 
   try {
     const query = 'select * from usuarios where email = $1';
-    const isUser = await connect.query(query, [email]);
 
-    if (isUser.rowCount === 0) {
+    const { rowCount: isUser, rows } = await connect.query(query, [email]);
+
+    if (!isUser) {
       return res.status(400).json('E-mail ou senha inválidos');
     }
 
-    const user = isUser.rows[0];
+    const user = rows[0];
     const hash = user.senha;
     const isPassword = await bcrypt.compare(password, hash);
 
@@ -69,6 +80,7 @@ export const login = async (req, res) => {
     }
 
     const jwtSecret = process.env.TOKEN_SECRET;
+
     const token = jwt.sign(
       {
         id: user.id,
@@ -107,9 +119,10 @@ export const userEdit = async (req, res) => {
   if (newEmail !== email) {
     try {
       const queryEmail = 'select * from usuarios where email = $1';
+
       const isEmail = await connect.query(queryEmail, [newEmail]);
 
-      if (isEmail.rowCount !== 0) {
+      if (!isEmail) {
         return res.status(400).json('E-mail já existe');
       }
     } catch (e) {
