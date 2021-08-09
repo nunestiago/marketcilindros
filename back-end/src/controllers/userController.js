@@ -18,8 +18,10 @@ export const register = async (req, res) => {
     if (user.rowCount > 0) {
       return res.status(400).json(`O email: ${email}, já está cadastrado`);
     }
-  } catch (error) {
-    return res.status(400).json(error.message);
+  } catch (e) {
+    return res.status(400).json({
+      errors: e.errors.map((err) => err.message),
+    });
   }
 
   try {
@@ -36,8 +38,10 @@ export const register = async (req, res) => {
         message: `Usuário ${username} registrado com a loja ${storename} e o e-mail ${email}`,
       },
     ]);
-  } catch (error) {
-    return res.status(400).json(error.message);
+  } catch (e) {
+    return res.status(400).json({
+      errors: e.errors.map((err) => err.message),
+    });
   }
 };
 
@@ -79,8 +83,10 @@ export const login = async (req, res) => {
     const { senha, ...rest } = user;
 
     return res.status(200).json({ user: rest, token });
-  } catch (error) {
-    return res.status(400).json(error.message);
+  } catch (e) {
+    return res.status(400).json({
+      errors: e.errors.map((err) => err.message),
+    });
   }
 };
 
@@ -106,8 +112,10 @@ export const userEdit = async (req, res) => {
       if (isEmail.rowCount !== 0) {
         return res.status(400).json('E-mail já existe');
       }
-    } catch (error) {
-      return res.status(400).json(error.message);
+    } catch (e) {
+      return res.status(400).json({
+        errors: e.errors.map((err) => err.message),
+      });
     }
   }
   const { rows: oldHash } = await connect.query(
@@ -145,7 +153,9 @@ export const userEdit = async (req, res) => {
       .json(
         `Usuário ${updatedName}, loja ${updatedStore}, e-mail ${updatedEmail} e senha ******* atualizados`,
       );
-  } catch (error) {
-    return res.status(400).json(error.message);
+  } catch (e) {
+    return res.status(400).json({
+      errors: e.errors.map((err) => err.message),
+    });
   }
 };
