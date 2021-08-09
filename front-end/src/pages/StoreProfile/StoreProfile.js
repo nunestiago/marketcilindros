@@ -1,6 +1,6 @@
 import { Button, Divider, TextField, Typography } from '@material-ui/core';
 import React from 'react';
-import { useForm } from 'react-hook-form';
+import { Link } from 'react-router-dom';
 
 import { UseAuth } from '../../context/AuthContext';
 import useStyles from './styles';
@@ -8,18 +8,6 @@ import useStyles from './styles';
 function StoreProfile() {
   const classes = useStyles();
   const { user } = UseAuth();
-  console.log(user);
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
-
-  function onSubmit(data) {
-    console.log(data);
-    console.log(errors);
-  }
 
   return (
     <div className={classes.root}>
@@ -29,7 +17,7 @@ function StoreProfile() {
       <Typography variant='h4' className={classes.subtitle}>
         Perfil
       </Typography>
-      <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
+      <form className={classes.form}>
         <TextField
           id='storename'
           label='Seu nome'
@@ -62,7 +50,13 @@ function StoreProfile() {
         <div className={classes.footer}>
           <Divider className={classes.divider} />
 
-          <Button variant='contained' color='primary' type='submit'>
+          <Button
+            variant='contained'
+            color='primary'
+            type='submit'
+            component={Link}
+            to={'/perfil/editar'}
+          >
             Editar perfil
           </Button>
         </div>
