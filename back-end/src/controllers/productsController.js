@@ -8,8 +8,34 @@ export const myProducts = async (req, res) => {
     const products = await connect.query(query, [id]);
 
     res.status(200).json(products.rows);
-  } catch (error) {
-    return res.status(400).json(error.message);
+  } catch (e) {
+    return res.status(400).json({
+      errors: e.errors.map((err) => err.message),
+    });
+  }
+};
+
+export const getProduct = async (req, res) => {
+  const { id: userId } = req.user;
+  const { id: productId } = req.params;
+
+  try {
+    const query =
+      'select * from produtos p where p.id = $1 and p.usuario_id = $2';
+    const { rowCount: isProduct, rows } = await connect.query(query, [
+      productId,
+      userId,
+    ]);
+
+    if (isProduct) {
+      return res.status(200).json({ error: 'Produto não encontrado' });
+    }
+
+    return res.status(200).json(rows[0]);
+  } catch (e) {
+    return res.status(400).json({
+      errors: e.errors.map((err) => err.message),
+    });
   }
 };
 
