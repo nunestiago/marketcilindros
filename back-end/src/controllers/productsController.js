@@ -1,5 +1,7 @@
 import connect from '../database/connect';
 
+/* eslint-disable operator-linebreak */
+/* eslint-disable object-curly-newline */
 export const myProducts = async (req, res) => {
   const { id } = req.user;
 
@@ -7,7 +9,7 @@ export const myProducts = async (req, res) => {
     const query = 'select * from produtos p where p.usuario_id = $1';
     const products = await connect.query(query, [id]);
 
-    res.status(200).json(products.rows);
+    return res.status(200).json(products.rows);
   } catch (e) {
     return res.status(400).json({
       errors: e.errors.map((err) => err.message),
@@ -16,18 +18,15 @@ export const myProducts = async (req, res) => {
 };
 
 export const getProduct = async (req, res) => {
-  const { id: userId } = req.user;
   const { id: productId } = req.params;
 
   try {
-    const query =
-      'select * from produtos p where p.id = $1 and p.usuario_id = $2';
+    const query = 'select * from produtos p where p.id = $1';
     const { rowCount: isProduct, rows } = await connect.query(query, [
       productId,
-      userId,
     ]);
 
-    if (isProduct) {
+    if (!isProduct) {
       return res.status(200).json({ error: 'Produto não encontrado' });
     }
 
