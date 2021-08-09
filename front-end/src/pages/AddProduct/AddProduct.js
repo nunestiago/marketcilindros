@@ -1,10 +1,4 @@
-import {
-  Button,
-  Divider,
-  InputAdornment,
-  TextField,
-  Typography,
-} from '@material-ui/core';
+import { Button, Divider, InputAdornment, TextField, Typography } from '@material-ui/core';
 import clsx from 'clsx';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -33,7 +27,7 @@ function AddProducts() {
     const formatedPrice = (data.price * 100).toFixed(0);
 
     try {
-      const response = await fetch('http://localhost:3001/addproduct', {
+      const response = await fetch('http://localhost:3001/produtos', {
         method: 'POST',
         body: JSON.stringify({
           userId: user.id,
