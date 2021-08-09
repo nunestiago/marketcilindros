@@ -21,8 +21,8 @@ export const addProduct = async (req, res) => {
     const { rowCount: newProduct } = await connect.query(query, [
       userId,
       name,
-      price,
       stock,
+      price,
       description,
       image,
     ]);
