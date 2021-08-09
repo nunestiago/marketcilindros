@@ -11,17 +11,22 @@ import useStyles from './styles';
 function CustomCard({ item }) {
   const classes = useStyles();
 
+  function handleItem(e) {
+    e.stopPropagation();
+    console.log(item);
+  }
+
   return (
     <Card className={classes.root} id={item?.id ?? 1}>
-      <CardActionArea>
-        <DeleteDialog />
+      <CardActionArea onClick={(e) => handleItem(e)}>
+        <DeleteDialog id={item?.id} />
         <CardMedia
           component='img'
-          alt={item?.name ?? 'Cadastre primeiro produto'}
+          alt={item?.nome ?? 'Cadastre primeiro produto'}
           height='240'
           width='230'
-          image={item?.image ?? 'http://loremflickr.com/240/230'}
-          title={item?.name ?? 'Cadastre primeiro produto'}
+          image={item?.imagem ?? 'http://loremflickr.com/240/230'}
+          title={item?.nome ?? 'Cadastre primeiro produto'}
         />
         <CardContent>
           <Typography
@@ -30,21 +35,23 @@ function CustomCard({ item }) {
             component='h2'
             className={classes.cardTitle}
           >
-            {item?.name ?? 'Registre algo'}
+            {item?.nome ?? 'Registre algo'}
           </Typography>
+
           <Typography variant='caption' color='textPrimary' component='p'>
             {item?.description ?? 'Cadastre primeiro produto'}
           </Typography>
+
           <div className={classes.cardBottom}>
             <Typography
               variant='overline'
               color='rgba(101, 101, 101, 0.855)'
               component='p'
             >
-              {item?.stock ?? 0} unidades
+              {item?.estoque ?? 0} unidades
             </Typography>
             <Typography variant='body2' color='textPrimary' component='p'>
-              R$ {(item?.price / 100).toFixed(2) ?? 99.99}
+              R$ {(item?.preco / 100).toFixed(2) ?? 99.99}
             </Typography>
           </div>
         </CardContent>
