@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 
 import useStyles from './styles';
 
-const PasswordField = (props, ref) => {
+const PasswordField = (props) => {
   const classes = useStyles();
   const [showPassword, setShowPassword] = useState(false);
 
