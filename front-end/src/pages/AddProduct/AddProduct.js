@@ -25,7 +25,7 @@ function AddProducts() {
     setLoading(true);
 
     const formatedPrice = (data.price * 100).toFixed(0);
-
+    console.log(data);
     try {
       const response = await fetch('http://localhost:3001/produtos', {
         method: 'POST',
@@ -34,7 +34,7 @@ function AddProducts() {
           name: data.productName,
           price: formatedPrice,
           stock: data.stock,
-          description: data.description,
+          description: data.productDescription,
           image: 'http://loremflickr.com/240/230',
         }),
         headers: {
@@ -48,8 +48,8 @@ function AddProducts() {
         err.Status = 400;
         throw err;
       }
-      history.push('/produtos');
-      reset();
+      // history.push('/produtos');
+
       setLoading(false);
     } catch (error) {
       setLoading(false);
