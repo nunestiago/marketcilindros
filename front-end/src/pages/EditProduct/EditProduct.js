@@ -17,6 +17,31 @@ function EditProduct(props) {
 
     formState: { errors },
   } = useForm();
+  console.log(product);
+
+  useEffect(() => {
+    async function getData() {
+      setLoading(true);
+      try {
+        const response = await fetch(`http://localhost:3001/produtos/${id}`, {
+          method: 'GET',
+
+          headers: {
+            Authorization: 'Bearer ' + token,
+          },
+        });
+        const data = await response.json();
+        setLoading(false);
+        return setProduct(data);
+      } catch (error) {
+        setLoading(false);
+        console.log(error.message);
+      }
+    }
+    getData();
+  }, []);
+
+  async function onSubmit(data) {
 
   function onSubmit(data) {
     console.log(data);
