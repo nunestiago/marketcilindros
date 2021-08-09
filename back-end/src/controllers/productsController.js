@@ -32,7 +32,44 @@ export const addProduct = async (req, res) => {
         .json({ error: 'Não foi possível registrar o produto' });
     }
     return res.status(200).json('Produto registrado');
-  } catch (error) {
-    return res.status(400).json({ error: error.message });
+  } catch (e) {
+    return res.status(400).json({
+      errors: e.errors.map((err) => err.message),
+    });
+  }
+};
+
+export const deleteProduct = async (req, res) => {
+  const { id: productId } = req.params;
+  const { id: userId } = req.user;
+
+  try {
+    const queryProduct =
+      'select * from produtos where id = $1 and usuario_id = $2';
+    const { rowCount: isProduct } = await connect.query(queryProduct, [
+      productId,
+      userId,
+    ]);
+
+    if (!isProduct) {
+      return res.status(400).json({ error: 'Produto não encontrado' });
+    }
+
+    const queryDelete = 'delete from produtos where id = $1';
+    const { rowCount: isDeleted } = await connect.query(queryDelete, [
+      productId,
+    ]);
+
+    if (!isDeleted) {
+      return res
+        .status(400)
+        .json({ error: 'Não foi possível apagar o produto' });
+    }
+
+    return res.status(200).json('Produto excluído');
+  } catch (e) {
+    return res.status(400).json({
+      errors: e.errors.map((err) => err.message),
+    });
   }
 };
