@@ -12,7 +12,7 @@ import React, { useState } from 'react';
 
 import useStyles from './styles';
 
-function ResponsiveDialog() {
+function ResponsiveDialog({ id }) {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const theme = useTheme();
