@@ -1,4 +1,10 @@
-import { Button, Divider, InputAdornment, TextField, Typography } from '@material-ui/core';
+import {
+  Button,
+  Divider,
+  InputAdornment,
+  TextField,
+  Typography,
+} from '@material-ui/core';
 import clsx from 'clsx';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -59,12 +65,15 @@ function AddProducts() {
   return (
     <div className={classes.root}>
       <Loading loading={loading} />
+
       <Typography variant='h3' className={classes.title}>
         {user.nome_loja}
       </Typography>
+
       <Typography variant='h4' className={classes.subtitle}>
         Adicionar produto
       </Typography>
+
       <form onSubmit={handleSubmit(handleNewItem)} className={classes.forms}>
         <TextField
           id='storename'
@@ -75,28 +84,24 @@ function AddProducts() {
             required: "'Nome do produto' obrigatório ",
           })}
         />
+
         <div>
           <TextField
-            {...register('price', {
-              required: "'Preço' obrigatório ",
-              valueAsNumber: 'Preço em números',
-            })}
+            {...register('price')}
             label='Preço'
             id='price'
             type='number'
             className={clsx(classes.margin)}
             InputProps={{
-              inputProps: { min: 0, step: 0.1 },
+              inputProps: { min: 0, step: 0.01 },
               startAdornment: (
                 <InputAdornment position='start'>R$</InputAdornment>
               ),
             }}
           />
+
           <TextField
-            {...register('stock', {
-              required: "'Estoque' obrigatório ",
-              valueAsNumber: 'Estoque em números',
-            })}
+            {...register('stock')}
             label='Estoque'
             id='stock'
             className={clsx(classes.margin)}
@@ -116,6 +121,7 @@ function AddProducts() {
           className={classes.margin}
           {...register('productDescription')}
         />
+
         <TextField
           id='productImage'
           label='Imagem'
@@ -123,12 +129,16 @@ function AddProducts() {
           className={classes.margin}
           {...register('productImage')}
         />
+
         <div className={classes.footer}>
           <Divider className={classes.divider} />
+
           <CustomAlert errors={errors} />
+
           <Button color='primary' component={Link} to={'/store'}>
             CANCELAR
           </Button>
+
           <Button variant='contained' color='primary' type='submit'>
             Adicionar produto
           </Button>
