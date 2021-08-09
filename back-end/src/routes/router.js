@@ -1,7 +1,18 @@
 import { Router } from 'express';
 
-import { addProduct, deleteProduct, getProduct, myProducts } from '../controllers/productsController';
-import { login, register, userEdit, userProfile } from '../controllers/userController';
+import {
+  addProduct,
+  deleteProduct,
+  editProduct,
+  getProduct,
+  myProducts,
+} from '../controllers/productsController';
+import {
+  login,
+  register,
+  userEdit,
+  userProfile,
+} from '../controllers/userController';
 import loginRequired from '../middleware/loginRequired';
 
 const router = new Router();
@@ -16,8 +27,8 @@ router.put('/perfil', userEdit);
 
 router.get('/produtos', myProducts);
 router.get('/produtos/:id', getProduct);
+router.put('/produto/:id', editProduct);
 router.post('/produtos', addProduct);
 router.delete('/produto/:id', deleteProduct);
-router.put('/produto/:id', addProduct);
 
 export default router;
