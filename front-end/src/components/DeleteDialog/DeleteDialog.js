@@ -9,7 +9,9 @@ import { useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import DeleteSweepIcon from '@material-ui/icons/DeleteSweep';
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 
+import { UseAuth } from '../../context/AuthContext';
 import useStyles from './styles';
 
 function ResponsiveDialog({ id }) {
@@ -17,6 +19,8 @@ function ResponsiveDialog({ id }) {
   const [open, setOpen] = useState(false);
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
+  const { token } = UseAuth();
+  const history = useHistory();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -26,8 +30,24 @@ function ResponsiveDialog({ id }) {
     setOpen(false);
   };
 
-  const handleDelete = (e) => {
+  const handleDelete = async (e) => {
     e.preventDefault();
+    try {
+      const response = await fetch(`http://localhost:3001/produto/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          authorization: 'Bearer ' + token,
+        },
+      });
+      const dataAPI = await response.json();
+      if (!response.ok) {
+        let err = new Error(dataAPI);
+        err.Status = 400;
+        throw err;
+      }
+      history.push('/store');
+    } catch (error) {}
 
     handleClose();
   };
