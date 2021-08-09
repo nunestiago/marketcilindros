@@ -39,11 +39,11 @@ export const getProduct = async (req, res) => {
 };
 
 export const editProduct = async (req, res) => {
-  const { nome, estoque, categoria, preco, descricao, imagem } = req.body;
+  const { nome, estoque, preco, descricao, imagem } = req.body;
   const { id: productId } = req.params;
   const { id: userId } = req.user;
 
-  if (!nome && !estoque && !categoria && !preco && !descricao && !imagem) {
+  if (!nome && !estoque && !preco && !descricao && !imagem) {
     return res.status(400).json('Algum campo deve ser informado.');
   }
 
@@ -61,11 +61,10 @@ export const editProduct = async (req, res) => {
 
     const myProduct = rows[0];
     const query =
-      'update myProducts set nome = $1, estoque = $2, categoria = $3, preco = $4, descricao = $5, imagem = $6 where id = $7';
+      'update produtos set nome = $1, estoque = $2, preco = $3, descricao = $4, imagem = $5 where id = $6';
     const values = [
       nome ?? myProduct.nome,
       estoque ?? myProduct.estoque,
-      categoria ?? myProduct.categoria,
       preco ?? myProduct.preco,
       descricao ?? myProduct.descricao,
       imagem ?? myProduct.imagem,
