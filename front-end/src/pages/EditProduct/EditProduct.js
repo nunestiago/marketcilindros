@@ -46,7 +46,6 @@ function EditProduct(props) {
     const onlyUpdatedData = Object.fromEntries(
       Object.entries(data).filter(([, value]) => value)
     );
-    console.log(await data);
 
     if (onlyUpdatedData.preco) {
       onlyUpdatedData.preco *= 100;
