@@ -39,7 +39,7 @@ function Login() {
       if (response.ok) {
         setUser(dataApi.user);
         setToken(dataApi.token);
-        history.push('/store');
+        history.push('/produtos');
         setLoading(false);
       }
       let err = new Error(dataApi);
@@ -103,7 +103,7 @@ function Login() {
                 style={{ width: '100%' }}
               >
                 Primeira vez aqui?
-                <Link to={'/register'}>CRIE UMA CONTA</Link>
+                <Link to={'/cadastro'}>CRIE UMA CONTA</Link>
               </Typography>
             </form>
           </Grid>

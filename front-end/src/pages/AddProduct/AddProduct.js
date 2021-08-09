@@ -48,7 +48,7 @@ function AddProducts() {
         err.Status = 400;
         throw err;
       }
-      history.push('/store');
+      history.push('/produtos');
       reset();
       setLoading(false);
     } catch (error) {
@@ -129,7 +129,7 @@ function AddProducts() {
 
           <CustomAlert errors={errors} />
 
-          <Button color='primary' component={Link} to={'/store'}>
+          <Button color='primary' component={Link} to={'/produtos'}>
             CANCELAR
           </Button>
 

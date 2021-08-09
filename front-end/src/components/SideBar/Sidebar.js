@@ -33,7 +33,7 @@ export default function IconTabs(props) {
             icon={<StorefrontIcon className={classes.svgIcon} />}
             aria-label='loja'
             component={Link}
-            to={'store'}
+            to={'/produtos'}
           />
           <Tab
             icon={<PersonIcon className={classes.svgIcon} />}

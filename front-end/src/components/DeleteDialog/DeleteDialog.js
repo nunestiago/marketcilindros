@@ -46,7 +46,7 @@ function ResponsiveDialog({ id }) {
         err.Status = 400;
         throw err;
       }
-      history.push('/store');
+      history.push('/produtos');
     } catch (error) {}
 
     handleClose();
