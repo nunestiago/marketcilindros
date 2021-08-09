@@ -48,7 +48,7 @@ function StoreProducts() {
         variant='contained'
         color='primary'
         component={Link}
-        to={'/addproduct'}
+        to={'/produtos/novo'}
       >
         Adicionar produto
       </Button>

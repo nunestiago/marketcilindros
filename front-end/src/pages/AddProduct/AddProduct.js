@@ -48,8 +48,7 @@ function AddProducts() {
         err.Status = 400;
         throw err;
       }
-      // history.push('/produtos');
-
+      history.push('/produtos');
       setLoading(false);
     } catch (error) {
       setLoading(false);
