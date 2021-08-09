@@ -1,6 +1,6 @@
 import { Router } from 'express';
 
-import { addProduct, myProducts } from '../controllers/productsController';
+import { addProduct, deleteProduct, getProduct, myProducts } from '../controllers/productsController';
 import { login, register, userEdit, userProfile } from '../controllers/userController';
 import loginRequired from '../middleware/loginRequired';
 
@@ -13,7 +13,11 @@ router.use(loginRequired);
 
 router.get('/perfil', userProfile);
 router.put('/perfil', userEdit);
-router.get('/store', myProducts);
-router.post('/addproduct', addProduct);
+
+router.get('/produtos', myProducts);
+router.get('/produtos/:id', getProduct);
+router.post('/produtos', addProduct);
+router.delete('/produto/:id', deleteProduct);
+router.put('/produto/:id', addProduct);
 
 export default router;
