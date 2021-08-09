@@ -9,7 +9,7 @@ import useStyles from './styles';
 function StoreProducts() {
   const classes = useStyles();
   const [products, setProducts] = useState([]);
-  const [isEmpty, setIsEmpty] = useState(false);
+
   const { user, token } = UseAuth();
 
   useEffect(() => {
@@ -21,17 +21,14 @@ function StoreProducts() {
           },
         });
         const data = await response.json();
-        if (data.length === 0) {
-          setIsEmpty(true);
-        }
+
         setProducts(data);
-        console.log(data);
       } catch (error) {
         console.log(error.message);
       }
     }
     getData();
-  }, [user]);
+  }, [token]);
 
   return (
     <div className={classes.root}>
@@ -43,9 +40,8 @@ function StoreProducts() {
       </Typography>
 
       <div style={{ display: 'flex', marginRight: '10px' }}>
-        <CustomCard />
         {products &&
-          products.forEach((item) => <CustomCard item={item} key={item.id} />)}
+          products.map((item) => <CustomCard item={item} key={item.id} />)}
       </div>
 
       <Divider className={classes.divider} />
