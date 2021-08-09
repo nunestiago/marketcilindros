@@ -37,6 +37,8 @@ export default function IconTabs(props) {
           />
           <Tab
             icon={<PersonIcon className={classes.svgIcon} />}
+            component={Link}
+            to={'/perfil'}
             aria-label='perfil'
           />
           <Tab
