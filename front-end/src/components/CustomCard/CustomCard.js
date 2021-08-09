@@ -6,10 +6,10 @@ import Typography from '@material-ui/core/Typography';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 
-import { DeleteDialog } from '..';
+import { DeleteButton } from '..';
 import useStyles from './styles';
 
-function CustomCard({ item }) {
+function CustomCard({ item, onClickOpen }) {
   const classes = useStyles();
   const history = useHistory();
 
@@ -22,7 +22,7 @@ function CustomCard({ item }) {
   return (
     <Card className={classes.root} id={item?.id ?? 1}>
       <CardActionArea onClick={handleItem}>
-        <DeleteDialog id={item?.id} />
+        <DeleteButton onClickOpen={onClickOpen} />
         <CardMedia
           component='img'
           alt={item?.nome ?? 'Cadastre primeiro produto'}
@@ -42,7 +42,7 @@ function CustomCard({ item }) {
           </Typography>
 
           <Typography variant='caption' color='textPrimary' component='p'>
-            {item?.description ?? 'Cadastre primeiro produto'}
+            {item?.descricao ?? 'Cadastre primeiro produto'}
           </Typography>
 
           <div className={classes.cardBottom}>

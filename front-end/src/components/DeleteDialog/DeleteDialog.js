@@ -1,4 +1,3 @@
-import { Avatar } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -7,33 +6,18 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import DeleteSweepIcon from '@material-ui/icons/DeleteSweep';
-import React, { useState } from 'react';
+import React from 'react';
 import { useHistory } from 'react-router-dom';
 
 import { UseAuth } from '../../context/AuthContext';
-import useStyles from './styles';
 
-function ResponsiveDialog({ id }) {
-  const classes = useStyles();
-  const [open, setOpen] = useState(false);
+function ResponsiveDialog({ id, onClose, open, getData }) {
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const { token } = UseAuth();
   const history = useHistory();
 
-  const handleClickOpen = (e) => {
-    e.stopPropagation();
-    e.cancelBubble = true;
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-    history.push('/produtos');
-  };
-
-  const handleDelete = async (e) => {
+  const handleDelete = async () => {
     try {
       const response = await fetch(`http://localhost:3001/produto/${id}`, {
         method: 'DELETE',
@@ -49,50 +33,41 @@ function ResponsiveDialog({ id }) {
         throw err;
       }
       history.push('/produtos');
-    } catch (error) {}
+    } catch (error) {
+    } finally {
+      getData();
+    }
 
-    handleClose();
+    onClose();
   };
 
   return (
-    <div>
-      <Avatar className={classes.deleteFlyButton} onClick={handleClickOpen}>
-        <DeleteSweepIcon className={classes.deleteSweepIcon} />
-      </Avatar>
-      <Dialog
-        fullScreen={fullScreen}
-        open={open}
-        onClose={handleClose}
-        aria-labelledby='responsive-dialog-title'
-      >
-        <DialogTitle id='responsive-dialog-title'>
-          {'Remover produto do catálogo?'}
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            Essa ação não pode ser desfeita!
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button
-            autoFocus
-            onClick={handleClose}
-            color='primary'
-            variant='contained'
-          >
-            Manter o produto
-          </Button>
-          <Button
-            onClick={(e) => handleDelete(e)}
-            color='secondary'
-            variant='contained'
-            autoFocus
-          >
-            Remover
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </div>
+    <Dialog
+      fullScreen={fullScreen}
+      open={open}
+      onClose={onClose}
+      aria-labelledby='responsive-dialog-title'
+    >
+      <DialogTitle id='responsive-dialog-title'>
+        {'Remover produto do catálogo?'}
+      </DialogTitle>
+      <DialogContent>
+        <DialogContentText>Essa ação não pode ser desfeita!</DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button autoFocus onClick={onClose} color='primary' variant='contained'>
+          Manter o produto
+        </Button>
+        <Button
+          onClick={handleDelete}
+          color='secondary'
+          variant='contained'
+          autoFocus
+        >
+          Remover
+        </Button>
+      </DialogActions>
+    </Dialog>
   );
 }
 export default ResponsiveDialog;
