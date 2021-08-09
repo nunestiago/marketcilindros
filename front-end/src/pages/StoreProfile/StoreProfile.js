@@ -2,10 +2,13 @@ import { Button, Divider, TextField, Typography } from '@material-ui/core';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 
+import { UseAuth } from '../../context/AuthContext';
 import useStyles from './styles';
 
 function StoreProfile() {
   const classes = useStyles();
+  const { user } = UseAuth();
+  console.log(user);
 
   const {
     register,
@@ -21,7 +24,7 @@ function StoreProfile() {
   return (
     <div className={classes.root}>
       <Typography variant='h3' className={classes.title}>
-        Nome da loja
+        {user.nome_loja}
       </Typography>
       <Typography variant='h4' className={classes.subtitle}>
         Perfil
@@ -31,28 +34,29 @@ function StoreProfile() {
           id='storename'
           label='Seu nome'
           type='text'
+          value={user.nome_loja}
           fullwidth
           className={classes.margin}
-          {...register('username', {
-            required: "'Nome da Loja' obrigatório ",
-          })}
+          InputLabelProps={{ shrink: true }}
         />
 
         <TextField
           id='productDescription'
           label='Nome da loja'
           type='text'
+          value={user.nome}
           fullwidth
           className={classes.margin}
-          {...register('productDescription')}
+          InputLabelProps={{ shrink: true }}
         />
         <TextField
           id='productDescription'
           label='E-mail'
           type='email'
+          value={user.email}
           fullwidth
           className={classes.margin}
-          {...register('productDescription')}
+          InputLabelProps={{ shrink: true }}
         />
 
         <div className={classes.footer}>
