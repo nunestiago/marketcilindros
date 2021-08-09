@@ -39,6 +39,49 @@ export const getProduct = async (req, res) => {
   }
 };
 
+export const editProduct = async (req, res) => {
+  const { nome, estoque, categoria, preco, descricao, imagem } = req.body;
+  const { id: productId } = req.params;
+  const { id: userId } = req.user;
+
+  if (!nome && !estoque && !categoria && !preco && !descricao && !imagem) {
+    return res.status(400).json('Algum campo deve ser informado.');
+  }
+
+  try {
+    const queryProduct =
+      'select * from produtos where id = $1 and usuario_id = $2';
+    const { rowCount, rows } = await connect.query(queryProduct, [
+      productId,
+      userId,
+    ]);
+
+    if (rowCount === 0) {
+      return res.status(404).json('Produto não encontrado');
+    }
+
+    const myProduct = rows[0];
+    const query =
+      'update myProducts set nome = $1, estoque = $2, categoria = $3, preco = $4, descricao = $5, imagem = $6 where id = $7';
+    const values = [
+      nome ?? myProduct.nome,
+      estoque ?? myProduct.estoque,
+      categoria ?? myProduct.categoria,
+      preco ?? myProduct.preco,
+      descricao ?? myProduct.descricao,
+      imagem ?? myProduct.imagem,
+      myProduct.id,
+    ];
+    const { rowCount: updatedProduct } = await connect.query(query, values);
+    if (!updatedProduct) {
+      return res.status(400).json('Não foi possível atualizar o produto.');
+    }
+    return res.status(200).json('Produto atualizado com sucesso.');
+  } catch (error) {
+    return res.status(400).json(error.message);
+  }
+};
+
 export const addProduct = async (req, res) => {
   const { userId, name, price, stock, description, image } = req.body;
   try {
