@@ -15,7 +15,7 @@ function StoreProducts() {
   useEffect(() => {
     async function getData() {
       try {
-        const response = await fetch('http://localhost:3001/store', {
+        const response = await fetch('http://localhost:3001/produtos', {
           headers: {
             Authorization: 'Bearer ' + token,
           },
