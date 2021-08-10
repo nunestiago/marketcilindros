@@ -41,7 +41,6 @@ function EditProduct(props) {
         return setProduct(data);
       } catch (error) {
         setLoading(false);
-        console.log(error.message);
       }
     }
     getData();
@@ -79,7 +78,6 @@ function EditProduct(props) {
       return history.push('/produtos');
     } catch (error) {
       setLoading(false);
-      console.log(error.message);
     }
   }
 
