@@ -119,10 +119,10 @@ export const userEdit = async (req, res) => {
   if (newEmail !== email) {
     try {
       const queryEmail = 'select * from usuarios where email = $1';
+      const { rowCount: isEmail } = await connect.query(queryEmail, [newEmail]);
+      console.log(isEmail);
 
-      const isEmail = await connect.query(queryEmail, [newEmail]);
-
-      if (!isEmail) {
+      if (isEmail) {
         return res.status(400).json('E-mail já existe');
       }
     } catch (e) {
@@ -161,14 +161,12 @@ export const userEdit = async (req, res) => {
       return res.status(400).json({ error: ['Liga pro gerente!'] });
     }
 
-    return res
-      .status(200)
-      .json({
-        id,
-        nome: updatedName,
-        nome_loja: updatedStore,
-        email: updatedEmail,
-      });
+    return res.status(200).json({
+      id,
+      nome: updatedName,
+      nome_loja: updatedStore,
+      email: updatedEmail,
+    });
   } catch (e) {
     return res.status(400).json({
       errors: e.errors.map((err) => err.message),
