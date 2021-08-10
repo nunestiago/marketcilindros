@@ -15,7 +15,7 @@ function Login() {
   const history = useHistory();
   const [loading, setLoading] = useState(false);
   const [apiError, setApiError] = useState('');
-  const { setUser, setToken, setCachedUser } = UseAuth();
+  const { setUser, setToken } = UseAuth();
   const {
     register,
     handleSubmit,
@@ -30,12 +30,11 @@ function Login() {
         method: 'POST',
         body: JSON.stringify({
           email: data.email,
-          password: data.password,
+          senha: data.password,
         }),
         headers: { 'Content-Type': 'application/json' },
       });
       const dataApi = await response.json();
-
       if (response.ok) {
         setUser(dataApi.user);
         setToken(dataApi.token);
@@ -102,8 +101,7 @@ function Login() {
                 display='block'
                 style={{ width: '100%' }}
               >
-                Primeira vez aqui?
-                <Link to={'/cadastro'}>CRIE UMA CONTA</Link>
+                Primeira vez aqui? <Link to={'/cadastro'}>CRIE UMA CONTA</Link>
               </Typography>
             </form>
           </Grid>
