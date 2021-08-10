@@ -1,18 +1,20 @@
 import { Button, Divider, TextField, Typography } from '@material-ui/core';
+import { Alert } from '@material-ui/lab';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useHistory } from 'react-router-dom';
 
-import { Loading } from '../../components';
+import { CustomAlert, Loading } from '../../components';
 import PasswordInput from '../../components/PasswordInput/PasswordInput';
 import { UseAuth } from '../../context/AuthContext';
 import useStyles from './styles';
 
 function EditProfile() {
   const classes = useStyles();
-  const { token, setUser, user } = UseAuth();
+  const { token, setUser } = UseAuth();
   const history = useHistory();
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState();
 
   const {
     register,
@@ -23,6 +25,7 @@ function EditProfile() {
 
   async function onSubmit(data) {
     setLoading(true);
+    setError('');
 
     const onlyUpdatedData = Object.fromEntries(
       Object.entries(data).filter(([, value]) => value)
@@ -40,17 +43,16 @@ function EditProfile() {
 
       const data = await response.json();
 
-      if (data.error) {
-        console.log(data.error);
-      }
-
       setLoading(false);
-      setUser(data);
 
-      return history.push('/produtos');
+      if (response.ok) {
+        setUser(data);
+        return history.push('/produtos');
+      }
+      setError(data);
     } catch (error) {
       setLoading(false);
-      console.log(error.message);
+      setError(error.message);
     }
   }
 
@@ -120,6 +122,8 @@ function EditProfile() {
 
         <div className={classes.footer}>
           <Divider className={classes.divider} />
+          {error && <Alert severity='error'>{error}</Alert>}
+          <CustomAlert errors={errors} />
           <Button
             variant='outlined'
             color='primary'
