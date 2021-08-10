@@ -1,10 +1,4 @@
-import {
-  Button,
-  Divider,
-  InputAdornment,
-  TextField,
-  Typography,
-} from '@material-ui/core';
+import { Button, Divider, InputAdornment, TextField, Typography } from '@material-ui/core';
 import clsx from 'clsx';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -35,24 +29,26 @@ function AddProducts() {
       const response = await fetch('http://localhost:3001/produtos', {
         method: 'POST',
         body: JSON.stringify({
-          userId: user.id,
-          name: data.productName,
-          price: formatedPrice,
-          stock: data.stock,
-          description: data.productDescription,
-          image: 'http://loremflickr.com/240/230',
+          id: user.id,
+          nome: data.productName,
+          preco: formatedPrice,
+          estoque: data.stock,
+          descricao: data.productDescription,
+          imagem: 'http://loremflickr.com/240/230',
         }),
         headers: {
           'Content-Type': 'application/json',
           authorization: 'Bearer ' + token,
         },
       });
+
       const dataAPI = await response.json();
       if (!response.ok) {
         let err = new Error(dataAPI);
         err.Status = 400;
         throw err;
       }
+
       history.push('/produtos');
       setLoading(false);
     } catch (error) {
