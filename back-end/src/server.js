@@ -10,6 +10,4 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(router);
 
-const port = process.env.PORT || 3001;
-
-app.listen(port);
+module.exports = app;
