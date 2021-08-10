@@ -25,7 +25,7 @@ function CustomCard({ item, onClickOpen }) {
         <DeleteButton onClickOpen={onClickOpen} />
         <CardMedia
           component='img'
-          alt={item?.nome ?? 'Cadastre primeiro produto'}
+          alt={item?.nome ?? 'Imagem do produto'}
           height='240'
           width='230'
           image={item?.imagem ?? 'http://loremflickr.com/240/230'}
@@ -42,7 +42,7 @@ function CustomCard({ item, onClickOpen }) {
           </Typography>
 
           <Typography variant='caption' color='textPrimary' component='p'>
-            {item?.descricao ?? 'Cadastre primeiro produto'}
+            {item?.descricao ?? 'Descrição do produto'}
           </Typography>
 
           <div className={classes.cardBottom}>
