@@ -81,17 +81,18 @@ export const editProduct = async (req, res) => {
 };
 
 export const addProduct = async (req, res) => {
-  const { userId, name, price, stock, description, image } = req.body;
+  const { id } = req.user;
+  const { nome, estoque, preco, descricao, imagem } = req.body;
   try {
     const query =
       'insert into produtos (usuario_id, nome, estoque, preco,  descricao, imagem) values ($1,$2,$3,$4,$5,$6)';
     const { rowCount: newProduct } = await connect.query(query, [
-      userId,
-      name,
-      stock,
-      price,
-      description,
-      image,
+      id,
+      nome,
+      estoque,
+      preco,
+      descricao,
+      imagem,
     ]);
     if (!newProduct) {
       return res
