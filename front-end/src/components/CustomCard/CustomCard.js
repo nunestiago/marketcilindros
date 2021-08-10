@@ -31,7 +31,7 @@ function CustomCard({ item, onClickOpen }) {
           image={item?.imagem ?? 'http://loremflickr.com/240/230'}
           title={item?.nome ?? 'Cadastre primeiro produto'}
         />
-        <CardContent>
+        <CardContent style={{ display: 'flex', flexDirection: 'column' }}>
           <Typography
             gutterBottom
             variant='h5'
@@ -41,7 +41,12 @@ function CustomCard({ item, onClickOpen }) {
             {item?.nome ?? 'Registre algo'}
           </Typography>
 
-          <Typography variant='caption' color='textPrimary' component='p'>
+          <Typography
+            variant='caption'
+            color='textPrimary'
+            component='p'
+            style={{ flexGrow: '1' }}
+          >
             {item?.descricao ?? 'Descrição do produto'}
           </Typography>
 
