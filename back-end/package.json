@@ -1,5 +1,5 @@
 {
-  "name": "back-end",
+  "name": "market cubos",
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
@@ -7,8 +7,15 @@
     "test": "jest",
     "dev": "nodemon src/index.js"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "market",
+    "cubos",
+    "heroku"
+  ],
+  "author": "Tiago Nunes",
+  "engines": {
+    "node": "14.x"
+  },
   "devDependencies": {
     "eslint": "^7.29.0",
     "eslint-config-airbnb-base": "^14.2.1",
