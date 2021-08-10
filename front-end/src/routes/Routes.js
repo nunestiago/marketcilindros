@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-d
 
 import { SideBar } from '../components';
 import { UseAuth } from '../context/AuthContext';
-import { AddProduct, EditProduct, EditProfile, Login, Register, StoreProducts, StoreProfile } from '../pages';
+import { AddProduct, EditProduct, EditProfile, Home, Login, Register, StoreProducts, StoreProfile } from '../pages';
 
 function ProtectedRoutes({ children }) {
   const { token } = UseAuth();
@@ -16,6 +16,8 @@ function Routes() {
       <Switch>
         <Route path='/' exact component={Login} />
         <Route path='/cadastro' component={Register} />
+        <Route path='/home' exact component={Home} />
+
         <ProtectedRoutes>
           <SideBar>
             <Route path='/produtos' exact component={StoreProducts} />
