@@ -6,7 +6,7 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: 140,
   },
   tabs: {
-    height: '100vh',
+    minHeight: '100%',
     maxWidth: 140,
     borderRight: `1px solid ${theme.palette.divider}`,
     borderRadius: '0 0 40px 0',
