@@ -163,9 +163,12 @@ export const userEdit = async (req, res) => {
 
     return res
       .status(200)
-      .json(
-        `Usuário ${updatedName}, loja ${updatedStore}, e-mail ${updatedEmail} e senha ******* atualizados`,
-      );
+      .json({
+        id,
+        nome: updatedName,
+        nome_loja: updatedStore,
+        email: updatedEmail,
+      });
   } catch (e) {
     return res.status(400).json({
       errors: e.errors.map((err) => err.message),
