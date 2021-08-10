@@ -3,13 +3,14 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useHistory } from 'react-router-dom';
 
+import { Loading } from '../../components';
 import PasswordInput from '../../components/PasswordInput/PasswordInput';
 import { UseAuth } from '../../context/AuthContext';
 import useStyles from './styles';
 
 function EditProfile() {
   const classes = useStyles();
-  const { token } = UseAuth();
+  const { token, setUser, user } = UseAuth();
   const history = useHistory();
   const [loading, setLoading] = useState(false);
 
@@ -44,8 +45,9 @@ function EditProfile() {
       }
 
       setLoading(false);
+      setUser(data);
 
-      return history.push('/perfil');
+      return history.push('/produtos');
     } catch (error) {
       setLoading(false);
       console.log(error.message);
@@ -54,6 +56,7 @@ function EditProfile() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={classes.root}>
+      <Loading loading={loading} />
       <Typography variant='h3' className={classes.title}>
         Nome da loja
       </Typography>
