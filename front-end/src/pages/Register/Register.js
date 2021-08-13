@@ -28,10 +28,10 @@ function Register() {
       const response = await fetch('http://localhost:3001/cadastro', {
         method: 'POST',
         body: JSON.stringify({
-          username: data.username,
-          storename: data.storename,
+          nome: data.username,
+          nome_loja: data.storename,
           email: data.email,
-          password: data.password,
+          senha: data.password,
         }),
         headers: { 'Content-Type': 'application/json' },
       });
