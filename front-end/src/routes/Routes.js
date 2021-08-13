@@ -14,10 +14,9 @@ function Routes() {
   return (
     <Router>
       <Switch>
-        <Route path='/' exact component={Login} />
+        <Route path='/' exact component={Home} />
         <Route path='/cadastro' component={Register} />
-        <Route path='/home' exact component={Home} />
-
+        <Route path='/login' exact component={Login} />
         <ProtectedRoutes>
           <SideBar>
             <Route path='/produtos' exact component={StoreProducts} />
