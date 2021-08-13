@@ -14,7 +14,9 @@ export const getAllStores = async (req, res) => {
 };
 
 export const getItemsFromStore = async (req, res) => {
-  const { id } = req.params;
+  const id = req.params.id || undefined;
+
+  if (!id) return res.json();
 
   try {
     const query = 'select * from produtos p where p.usuario_id = $1';
@@ -23,8 +25,6 @@ export const getItemsFromStore = async (req, res) => {
 
     return res.status(200).json(rows);
   } catch (e) {
-    return res.status(400).json({
-      errors: e.errors.map((err) => err.message),
-    });
+    return res.status(400).json(console.log(e));
   }
 };
