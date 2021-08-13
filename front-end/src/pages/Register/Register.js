@@ -25,16 +25,19 @@ function Register() {
     setLoading(true);
 
     try {
-      const response = await fetch('http://localhost:3001/cadastro', {
-        method: 'POST',
-        body: JSON.stringify({
-          nome: data.username,
-          nome_loja: data.storename,
-          email: data.email,
-          senha: data.password,
-        }),
-        headers: { 'Content-Type': 'application/json' },
-      });
+      const response = await fetch(
+        'https://stark-coast-12913.herokuapp.com/cadastro',
+        {
+          method: 'POST',
+          body: JSON.stringify({
+            nome: data.username,
+            nome_loja: data.storename,
+            email: data.email,
+            senha: data.password,
+          }),
+          headers: { 'Content-Type': 'application/json' },
+        }
+      );
       const dataAPI = await response.json();
       if (!response.ok) {
         let err = new Error(dataAPI);

@@ -22,7 +22,7 @@ function StoreProducts() {
 
   async function getData() {
     try {
-      const response = await fetch('http://localhost:3001/produtos', {
+      const response = await fetch('https://stark-coast-12913.herokuapp.com/produtos', {
         headers: {
           Authorization: 'Bearer ' + token,
         },

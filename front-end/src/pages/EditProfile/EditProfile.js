@@ -32,14 +32,17 @@ function EditProfile() {
     );
 
     try {
-      const response = await fetch(`http://localhost:3001/perfil`, {
-        method: 'PUT',
-        body: JSON.stringify(onlyUpdatedData),
-        headers: {
-          'Content-type': 'application/json',
-          Authorization: 'Bearer ' + token,
-        },
-      });
+      const response = await fetch(
+        `https://stark-coast-12913.herokuapp.com/perfil`,
+        {
+          method: 'PUT',
+          body: JSON.stringify(onlyUpdatedData),
+          headers: {
+            'Content-type': 'application/json',
+            Authorization: 'Bearer ' + token,
+          },
+        }
+      );
 
       const data = await response.json();
 

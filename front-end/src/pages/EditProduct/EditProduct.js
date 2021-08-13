@@ -1,10 +1,4 @@
-import {
-  Button,
-  Divider,
-  InputAdornment,
-  TextField,
-  Typography,
-} from '@material-ui/core';
+import { Button, Divider, InputAdornment, TextField, Typography } from '@material-ui/core';
 import clsx from 'clsx';
 import Image from 'material-ui-image';
 import React, { useEffect, useState } from 'react';
@@ -29,7 +23,7 @@ function EditProduct(props) {
     async function getData() {
       setLoading(true);
       try {
-        const response = await fetch(`http://localhost:3001/produtos/${id}`, {
+        const response = await fetch(`https://stark-coast-12913.herokuapp.com/produtos/${id}`, {
           method: 'GET',
           headers: {
             Authorization: 'Bearer ' + token,
@@ -58,7 +52,7 @@ function EditProduct(props) {
     }
 
     try {
-      const response = await fetch(`http://localhost:3001/produto/${id}`, {
+      const response = await fetch(`https://stark-coast-12913.herokuapp.com/produto/${id}`, {
         method: 'PUT',
         body: JSON.stringify(onlyUpdatedData),
         headers: {

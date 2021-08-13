@@ -19,7 +19,7 @@ function ResponsiveDialog({ id, onClose, open, getData }) {
 
   const handleDelete = async () => {
     try {
-      const response = await fetch(`http://localhost:3001/produto/${id}`, {
+      const response = await fetch(`https://stark-coast-12913.herokuapp.com/produto/${id}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',

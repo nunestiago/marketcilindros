@@ -26,14 +26,17 @@ function Login() {
     setLoading(true);
 
     try {
-      const response = await fetch('http://localhost:3001/login', {
-        method: 'POST',
-        body: JSON.stringify({
-          email: data.email,
-          senha: data.password,
-        }),
-        headers: { 'Content-Type': 'application/json' },
-      });
+      const response = await fetch(
+        'https://stark-coast-12913.herokuapp.com/login',
+        {
+          method: 'POST',
+          body: JSON.stringify({
+            email: data.email,
+            senha: data.password,
+          }),
+          headers: { 'Content-Type': 'application/json' },
+        }
+      );
       const dataApi = await response.json();
       if (response.ok) {
         setUser(dataApi.user);

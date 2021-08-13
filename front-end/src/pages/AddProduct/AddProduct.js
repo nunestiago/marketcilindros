@@ -22,25 +22,28 @@ function AddProducts() {
 
   async function handleNewItem(data) {
     setLoading(true);
-
+    console.log(data);
     const formatedPrice = (data.price * 100).toFixed(0);
 
     try {
-      const response = await fetch('http://localhost:3001/produtos', {
-        method: 'POST',
-        body: JSON.stringify({
-          id: user.id,
-          nome: data.productName,
-          preco: formatedPrice,
-          estoque: data.stock,
-          descricao: data.productDescription,
-          imagem: 'http://loremflickr.com/240/230',
-        }),
-        headers: {
-          'Content-Type': 'application/json',
-          authorization: 'Bearer ' + token,
-        },
-      });
+      const response = await fetch(
+        'https://stark-coast-12913.herokuapp.com/produtos',
+        {
+          method: 'POST',
+          body: JSON.stringify({
+            id: user.id,
+            nome: data.productName,
+            preco: formatedPrice,
+            estoque: data.stock,
+            descricao: data.productDescription,
+            imagem: data.productImage,
+          }),
+          headers: {
+            'Content-Type': 'application/json',
+            authorization: 'Bearer ' + token,
+          },
+        }
+      );
 
       const dataAPI = await response.json();
       if (!response.ok) {

@@ -68,7 +68,7 @@ export default function SignIn() {
 
   async function getData() {
     try {
-      const response = await fetch('http://localhost:3001/lojas');
+      const response = await fetch('https://stark-coast-12913.herokuapp.com/lojas');
       const data = await response.json();
 
       setStores(data);
@@ -78,7 +78,7 @@ export default function SignIn() {
   async function getStoreItems(id) {
     if (!id) return setProducts([]);
     try {
-      const response = await fetch(`http://localhost:3001/lojas/${id}`);
+      const response = await fetch(`https://stark-coast-12913.herokuapp.com/lojas/${id}`);
       const data = await response.json();
       setProducts(data);
     } catch (error) {}
@@ -116,7 +116,7 @@ export default function SignIn() {
                 variant='contained'
                 color='secondary'
                 style={{ marginBottom: 30 }}
-                onClick={() => history.push('/')}
+                onClick={() => history.push('/login')}
               >
                 Login
               </Button>

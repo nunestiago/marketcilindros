@@ -32,6 +32,7 @@ function CustomCard({ item, onClickOpen }) {
         }}
       >
         <DeleteButton onClickOpen={onClickOpen} />
+
         <CardMedia
           component='img'
           alt={item?.nome ?? 'Imagem do produto'}
