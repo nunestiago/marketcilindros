@@ -7,9 +7,9 @@ import jwt from 'jsonwebtoken';
 import connect from '../database/connect';
 
 export const register = async (req, res) => {
-  const { username, storename, email, password } = req.body;
+  const { nome, nome_loja, email, senha } = req.body;
 
-  if (!username || !storename || !email || !password) {
+  if (!nome || !nome_loja || !email || !senha) {
     return res.status(400).json('Todos os campos são obrigatórios');
   }
 
@@ -27,14 +27,14 @@ export const register = async (req, res) => {
   }
 
   try {
-    const hash = await bcrypt.hash(password, 8);
+    const hash = await bcrypt.hash(senha, 8);
 
     const registerQuery =
       'insert into usuarios (nome, nome_loja, email, senha) values ($1,$2,$3,$4) ';
 
     const { rowCount: isRegister } = await connect.query(registerQuery, [
-      username,
-      storename,
+      nome,
+      nome_loja,
       email,
       hash,
     ]);
@@ -43,11 +43,11 @@ export const register = async (req, res) => {
       return res.status(400).json('Não foi possivel cadastrar usuário');
     }
 
-    return res.status(200).json([
-      {
-        message: `Usuário ${username} registrado com a loja ${storename} e o e-mail ${email}`,
-      },
-    ]);
+    return res
+      .status(200)
+      .json(
+        `Usuário ${nome} registrado com a loja ${nome_loja} e o e-mail ${email}`,
+      );
   } catch (e) {
     return res.status(400).json({
       errors: e.errors.map((err) => err.message),
