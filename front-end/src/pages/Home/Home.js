@@ -76,6 +76,7 @@ export default function SignIn() {
   }
 
   async function getStoreItems(id) {
+    if (!id) return setProducts([]);
     try {
       const response = await fetch(`http://localhost:3001/lojas/${id}`);
       const data = await response.json();
@@ -137,9 +138,7 @@ export default function SignIn() {
               justifyContent: 'center',
             }}
           >
-            {products.map((item) => (
-              <CustomCard item={item} />
-            ))}
+            {products && products.map((item) => <CustomCard item={item} />)}
           </div>
         </form>
       </div>
