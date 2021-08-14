@@ -14,9 +14,11 @@ function StoreProfile() {
       <Typography variant='h3' className={classes.title}>
         {user.nome_loja}
       </Typography>
+
       <Typography variant='h4' className={classes.subtitle}>
         Perfil
       </Typography>
+
       <form className={classes.form}>
         <TextField
           id='storename'
@@ -37,6 +39,7 @@ function StoreProfile() {
           className={classes.margin}
           InputLabelProps={{ shrink: true }}
         />
+
         <TextField
           id='productDescription'
           label='E-mail'

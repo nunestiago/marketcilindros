@@ -23,12 +23,15 @@ function EditProduct(props) {
     async function getData() {
       setLoading(true);
       try {
-        const response = await fetch(`https://stark-coast-12913.herokuapp.com/produtos/${id}`, {
-          method: 'GET',
-          headers: {
-            Authorization: 'Bearer ' + token,
-          },
-        });
+        const response = await fetch(
+          `https://stark-coast-12913.herokuapp.com/produtos/${id}`,
+          {
+            method: 'GET',
+            headers: {
+              Authorization: 'Bearer ' + token,
+            },
+          }
+        );
 
         const data = await response.json();
         setLoading(false);
@@ -52,14 +55,17 @@ function EditProduct(props) {
     }
 
     try {
-      const response = await fetch(`https://stark-coast-12913.herokuapp.com/produto/${id}`, {
-        method: 'PUT',
-        body: JSON.stringify(onlyUpdatedData),
-        headers: {
-          'Content-type': 'application/json',
-          Authorization: 'Bearer ' + token,
-        },
-      });
+      const response = await fetch(
+        `https://stark-coast-12913.herokuapp.com/produto/${id}`,
+        {
+          method: 'PUT',
+          body: JSON.stringify(onlyUpdatedData),
+          headers: {
+            'Content-type': 'application/json',
+            Authorization: 'Bearer ' + token,
+          },
+        }
+      );
 
       const data = await response.json();
 

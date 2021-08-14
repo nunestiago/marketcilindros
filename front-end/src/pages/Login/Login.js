@@ -88,7 +88,10 @@ function Login() {
                 }
               />
 
-              <CustomAlert errors={errors} />
+              {Object.keys(errors).length > 0 && (
+                <CustomAlert errors={errors} />
+              )}
+
               {apiError && (
                 <Alert severity='error' className={classes.alert}>
                   {apiError}

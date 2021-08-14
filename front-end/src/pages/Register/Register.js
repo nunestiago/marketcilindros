@@ -1,6 +1,6 @@
 import { Button, Grid, Paper, TextField, Typography } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useHistory } from 'react-router-dom';
 
@@ -12,6 +12,7 @@ function Register() {
   const classes = useStyles();
   const [loading, setLoading] = useState(false);
   const [apiError, setApiError] = useState('');
+  const [newError, setNewError] = useState({});
   const history = useHistory();
 
   const {
@@ -20,6 +21,10 @@ function Register() {
     getValues,
     formState: { errors },
   } = useForm();
+
+  useEffect(() => {
+    setNewError(errors);
+  }, [errors]);
 
   async function handleRegistration(data) {
     setLoading(true);
@@ -38,13 +43,17 @@ function Register() {
           headers: { 'Content-Type': 'application/json' },
         }
       );
+
       const dataAPI = await response.json();
+
       if (!response.ok) {
         let err = new Error(dataAPI);
         err.Status = 400;
         throw err;
       }
+
       setLoading(false);
+
       history.push('/login');
     } catch (error) {
       setApiError(error.message);
@@ -55,12 +64,14 @@ function Register() {
   return (
     <div className={classes.root}>
       <Loading loading={loading} />
+
       <Paper className={classes.paper} elevation={10}>
         <Grid container spacing={2}>
           <Grid item xs>
             <Typography variant='h4' gutterBottom={true}>
               Criar uma conta
             </Typography>
+
             <form
               className={classes.form}
               onSubmit={handleSubmit(handleRegistration)}
@@ -75,6 +86,7 @@ function Register() {
                 })}
                 error={!!errors.username}
               />
+
               <TextField
                 id='storename'
                 label='Nome da loja'
@@ -85,6 +97,7 @@ function Register() {
                   required: "Campo 'Nome da Loja' obrigatório ",
                 })}
               />
+
               <TextField
                 id='email'
                 label='E-mail'
@@ -95,6 +108,7 @@ function Register() {
                   required: "Campo 'E-mail' obrigatório ",
                 })}
               />
+
               <PasswordInput
                 label='Senha'
                 register={() =>
@@ -104,6 +118,7 @@ function Register() {
                 }
                 error={!!errors.password}
               />
+
               <PasswordInput
                 label='Repita a senha'
                 error={!!errors.passwordConfirmation}
@@ -119,16 +134,21 @@ function Register() {
                   })
                 }
               />
+
               {apiError && (
                 <Alert severity='error' className={classes.alert}>
                   {apiError}
                 </Alert>
               )}
-              <CustomAlert errors={errors} />
+
+              {Object.keys(newError).length > 0 && (
+                <CustomAlert errors={newError} />
+              )}
 
               <Button type='submit' color='primary' variant='contained'>
                 CRIAR CONTA
               </Button>
+
               <Typography variant='caption' display='block'>
                 Já possui uma conta? <Link to={'/login'}> ACESSE</Link>
               </Typography>

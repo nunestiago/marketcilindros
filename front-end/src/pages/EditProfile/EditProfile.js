@@ -125,8 +125,11 @@ function EditProfile() {
 
         <div className={classes.footer}>
           <Divider className={classes.divider} />
+
           {error && <Alert severity='error'>{error}</Alert>}
-          <CustomAlert errors={errors} />
+
+          {Object.keys(errors).length > 0 && <CustomAlert errors={errors} />}
+
           <Button
             variant='outlined'
             color='primary'
