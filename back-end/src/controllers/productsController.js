@@ -60,8 +60,10 @@ export const editProduct = async (req, res) => {
     }
 
     const myProduct = rows[0];
+
     const query =
       'update produtos set nome = $1, estoque = $2, preco = $3, descricao = $4, imagem = $5 where id = $6';
+
     const values = [
       nome ?? myProduct.nome,
       estoque ?? myProduct.estoque,
@@ -70,10 +72,13 @@ export const editProduct = async (req, res) => {
       imagem ?? myProduct.imagem,
       myProduct.id,
     ];
+
     const { rowCount: updatedProduct } = await connect.query(query, values);
+
     if (!updatedProduct) {
       return res.status(400).json('Não foi possível atualizar o produto.');
     }
+
     return res.status(200).json('Produto atualizado com sucesso.');
   } catch (error) {
     return res.status(400).json(error.message);
@@ -81,23 +86,29 @@ export const editProduct = async (req, res) => {
 };
 
 export const addProduct = async (req, res) => {
-  const { userId, name, price, stock, description, image } = req.body;
+  const { id } = req.user;
+  const { nome, estoque, preco, categoria, descricao, imagem } = req.body;
+
   try {
     const query =
-      'insert into produtos (usuario_id, nome, estoque, preco,  descricao, imagem) values ($1,$2,$3,$4,$5,$6)';
+      'insert into produtos (usuario_id, nome, estoque, preco, categoria, descricao, imagem) values ($1,$2,$3,$4,$5,$6,$7)';
+
     const { rowCount: newProduct } = await connect.query(query, [
-      userId,
-      name,
-      stock,
-      price,
-      description,
-      image,
+      id,
+      nome,
+      estoque,
+      preco,
+      categoria,
+      descricao,
+      imagem,
     ]);
+
     if (!newProduct) {
       return res
         .status(400)
         .json({ error: 'Não foi possível registrar o produto' });
     }
+
     return res.status(200).json('Produto registrado');
   } catch (e) {
     return res.status(400).json({

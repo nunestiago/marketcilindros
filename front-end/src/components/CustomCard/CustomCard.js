@@ -21,17 +21,29 @@ function CustomCard({ item, onClickOpen }) {
 
   return (
     <Card className={classes.root} id={item?.id ?? 1}>
-      <CardActionArea onClick={handleItem}>
+      <CardActionArea
+        onClick={handleItem}
+        style={{
+          height: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'stretch',
+          justifyContent: 'flex-start',
+        }}
+      >
         <DeleteButton onClickOpen={onClickOpen} />
+
         <CardMedia
           component='img'
-          alt={item?.nome ?? 'Cadastre primeiro produto'}
+          alt={item?.nome ?? 'Imagem do produto'}
           height='240'
           width='230'
           image={item?.imagem ?? 'http://loremflickr.com/240/230'}
           title={item?.nome ?? 'Cadastre primeiro produto'}
         />
-        <CardContent>
+        <CardContent
+          style={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}
+        >
           <Typography
             gutterBottom
             variant='h5'
@@ -41,8 +53,13 @@ function CustomCard({ item, onClickOpen }) {
             {item?.nome ?? 'Registre algo'}
           </Typography>
 
-          <Typography variant='caption' color='textPrimary' component='p'>
-            {item?.descricao ?? 'Cadastre primeiro produto'}
+          <Typography
+            variant='caption'
+            color='textPrimary'
+            component='p'
+            style={{ flexGrow: '1' }}
+          >
+            {item?.descricao ?? 'Descrição do produto'}
           </Typography>
 
           <div className={classes.cardBottom}>

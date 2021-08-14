@@ -15,7 +15,7 @@ function Login() {
   const history = useHistory();
   const [loading, setLoading] = useState(false);
   const [apiError, setApiError] = useState('');
-  const { setUser, setToken, setCachedUser } = UseAuth();
+  const { setUser, setToken } = UseAuth();
   const {
     register,
     handleSubmit,
@@ -26,16 +26,18 @@ function Login() {
     setLoading(true);
 
     try {
-      const response = await fetch('http://localhost:3001/login', {
-        method: 'POST',
-        body: JSON.stringify({
-          email: data.email,
-          password: data.password,
-        }),
-        headers: { 'Content-Type': 'application/json' },
-      });
+      const response = await fetch(
+        'https://stark-coast-12913.herokuapp.com/login',
+        {
+          method: 'POST',
+          body: JSON.stringify({
+            email: data.email,
+            senha: data.password,
+          }),
+          headers: { 'Content-Type': 'application/json' },
+        }
+      );
       const dataApi = await response.json();
-
       if (response.ok) {
         setUser(dataApi.user);
         setToken(dataApi.token);
@@ -86,7 +88,10 @@ function Login() {
                 }
               />
 
-              <CustomAlert errors={errors} />
+              {Object.keys(errors).length > 0 && (
+                <CustomAlert errors={errors} />
+              )}
+
               {apiError && (
                 <Alert severity='error' className={classes.alert}>
                   {apiError}
@@ -102,8 +107,7 @@ function Login() {
                 display='block'
                 style={{ width: '100%' }}
               >
-                Primeira vez aqui?
-                <Link to={'/cadastro'}>CRIE UMA CONTA</Link>
+                Primeira vez aqui? <Link to={'/cadastro'}>CRIE UMA CONTA</Link>
               </Typography>
             </form>
           </Grid>

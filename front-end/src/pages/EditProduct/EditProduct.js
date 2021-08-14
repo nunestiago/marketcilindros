@@ -1,10 +1,4 @@
-import {
-  Button,
-  Divider,
-  InputAdornment,
-  TextField,
-  Typography,
-} from '@material-ui/core';
+import { Button, Divider, InputAdornment, TextField, Typography } from '@material-ui/core';
 import clsx from 'clsx';
 import Image from 'material-ui-image';
 import React, { useEffect, useState } from 'react';
@@ -29,19 +23,21 @@ function EditProduct(props) {
     async function getData() {
       setLoading(true);
       try {
-        const response = await fetch(`http://localhost:3001/produtos/${id}`, {
-          method: 'GET',
-          headers: {
-            Authorization: 'Bearer ' + token,
-          },
-        });
+        const response = await fetch(
+          `https://stark-coast-12913.herokuapp.com/produtos/${id}`,
+          {
+            method: 'GET',
+            headers: {
+              Authorization: 'Bearer ' + token,
+            },
+          }
+        );
 
         const data = await response.json();
         setLoading(false);
         return setProduct(data);
       } catch (error) {
         setLoading(false);
-        console.log(error.message);
       }
     }
     getData();
@@ -59,14 +55,17 @@ function EditProduct(props) {
     }
 
     try {
-      const response = await fetch(`http://localhost:3001/produto/${id}`, {
-        method: 'PUT',
-        body: JSON.stringify(onlyUpdatedData),
-        headers: {
-          'Content-type': 'application/json',
-          Authorization: 'Bearer ' + token,
-        },
-      });
+      const response = await fetch(
+        `https://stark-coast-12913.herokuapp.com/produto/${id}`,
+        {
+          method: 'PUT',
+          body: JSON.stringify(onlyUpdatedData),
+          headers: {
+            'Content-type': 'application/json',
+            Authorization: 'Bearer ' + token,
+          },
+        }
+      );
 
       const data = await response.json();
 
@@ -79,7 +78,6 @@ function EditProduct(props) {
       return history.push('/produtos');
     } catch (error) {
       setLoading(false);
-      console.log(error.message);
     }
   }
 

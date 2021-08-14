@@ -1,17 +1,20 @@
 import { Button, Divider, TextField, Typography } from '@material-ui/core';
+import { Alert } from '@material-ui/lab';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useHistory } from 'react-router-dom';
 
+import { CustomAlert, Loading } from '../../components';
 import PasswordInput from '../../components/PasswordInput/PasswordInput';
 import { UseAuth } from '../../context/AuthContext';
 import useStyles from './styles';
 
 function EditProfile() {
   const classes = useStyles();
-  const { token } = UseAuth();
+  const { token, setUser } = UseAuth();
   const history = useHistory();
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState();
 
   const {
     register,
@@ -22,38 +25,43 @@ function EditProfile() {
 
   async function onSubmit(data) {
     setLoading(true);
+    setError('');
 
     const onlyUpdatedData = Object.fromEntries(
       Object.entries(data).filter(([, value]) => value)
     );
 
     try {
-      const response = await fetch(`http://localhost:3001/perfil`, {
-        method: 'PUT',
-        body: JSON.stringify(onlyUpdatedData),
-        headers: {
-          'Content-type': 'application/json',
-          Authorization: 'Bearer ' + token,
-        },
-      });
+      const response = await fetch(
+        `https://stark-coast-12913.herokuapp.com/perfil`,
+        {
+          method: 'PUT',
+          body: JSON.stringify(onlyUpdatedData),
+          headers: {
+            'Content-type': 'application/json',
+            Authorization: 'Bearer ' + token,
+          },
+        }
+      );
 
       const data = await response.json();
 
-      if (data.error) {
-        console.log(data.error);
-      }
-
       setLoading(false);
 
-      return history.push('/perfil');
+      if (response.ok) {
+        setUser(data);
+        return history.push('/produtos');
+      }
+      setError(data);
     } catch (error) {
       setLoading(false);
-      console.log(error.message);
+      setError(error.message);
     }
   }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={classes.root}>
+      <Loading loading={loading} />
       <Typography variant='h3' className={classes.title}>
         Nome da loja
       </Typography>
@@ -117,6 +125,11 @@ function EditProfile() {
 
         <div className={classes.footer}>
           <Divider className={classes.divider} />
+
+          {error && <Alert severity='error'>{error}</Alert>}
+
+          {Object.keys(errors).length > 0 && <CustomAlert errors={errors} />}
+
           <Button
             variant='outlined'
             color='primary'

@@ -17,7 +17,7 @@ export default async (req, res, next) => {
     const query = 'select * from usuarios where id = $1';
     const { rowCount, rows } = await connect.query(query, [id]);
 
-    if (rowCount === 0) {
+    if (!rowCount) {
       return res.status(400).json({ errors: ['Usuário não encontrado'] });
     }
     const { senha, ...rest } = rows[0];

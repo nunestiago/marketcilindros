@@ -26,7 +26,7 @@ export default function IconTabs(props) {
   }
 
   return (
-    <div style={{ display: 'flex' }}>
+    <div style={{ display: 'flex', minHeight: '100vh' }}>
       <div className={classes.root}>
         <Tabs
           orientation='vertical'

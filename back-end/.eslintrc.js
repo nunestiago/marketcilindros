@@ -12,4 +12,13 @@ module.exports = {
     'no-console': 'off',
     'class-methods-use-this': 'off',
   },
+
+  overrides: [
+    {
+      files: ['**/*.spec.js', '**/*.spec.jsx'],
+      env: {
+        jest: true,
+      },
+    },
+  ],
 };

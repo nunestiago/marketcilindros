@@ -1,14 +1,23 @@
 {
-  "name": "back-end",
+  "name": "marketcubos",
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon src/server.js"
+    "test": "jest",
+    "dev": "nodemon src/index.js",
+    "start": "node src/index.js",
+    "build": "sucrase ./src -d /build --transforms javascript,imports "
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "market",
+    "cubos",
+    "heroku"
+  ],
+  "author": "Tiago Nunes",
+  "engines": {
+    "node": "14.x"
+  },
   "devDependencies": {
     "eslint": "^7.29.0",
     "eslint-config-airbnb-base": "^14.2.1",
@@ -17,11 +26,14 @@
     "sucrase": "^3.19.0"
   },
   "dependencies": {
+    "@sucrase/jest-plugin": "^2.1.1",
     "bcrypt": "^5.0.1",
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
+    "jest": "^27.0.6",
     "jsonwebtoken": "^8.5.1",
-    "pg": "^8.6.0"
+    "pg": "^8.6.0",
+    "supertest": "^6.1.4"
   }
 }

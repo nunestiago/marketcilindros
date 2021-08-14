@@ -1,6 +1,6 @@
 import { makeStyles, Snackbar } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 const useStyles = makeStyles(() => ({
   alert: {
@@ -10,7 +10,8 @@ const useStyles = makeStyles(() => ({
 
 function CustomAlert({ errors }) {
   const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const error = Object.keys(errors)[0];
 
   useEffect(() => {
     setOpen(true);
@@ -34,18 +35,11 @@ function CustomAlert({ errors }) {
   };
   return (
     <>
-      {Object.keys(errors).map((item, index) => (
-        <Snackbar
-          open={open}
-          autoHideDuration={6000}
-          onClose={handleClose}
-          key={index}
-        >
-          <Alert severity='error' className={classes.alert}>
-            {errors[item].message}
-          </Alert>
-        </Snackbar>
-      ))}
+      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert severity='error' className={classes.alert}>
+          {errors[error].message}
+        </Alert>
+      </Snackbar>
     </>
   );
 }
